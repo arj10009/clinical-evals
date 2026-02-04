@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Virtual env
+.venv/
+venv/
+
+# Env / secrets
+.env
+
+# macOS
+.DS_Store
+
+# Large / generated artifacts (keep reports if you want)
+outputs/
