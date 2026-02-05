@@ -1,5 +1,15 @@
 # Clinical Evals
 
+## 30-second pitch
+This repo is a small clinical safety evaluation harness to practice the exact job I’m aiming for: **measuring whether a model under-triages or gives unsafe guidance in high-risk presentations**.
+
+- 30 curated synthetic cases across 6 buckets (chest pain, stroke, sepsis/meningitis, pregnancy, meds, suicide)
+- Baseline vs constrained prompting
+- Manual scoring for safety, grounding, uncertainty, actionability + hard-fail
+- Printable scoring packet + final report summarizing failure modes and deltas
+
+It’s an MVP, but already usable for iterating toward a real evaluation suite (adversarial variants, multi-turn cases, specialist gold labels, automated checks).
+
 This repository is a lightweight evaluation harness for clinical conversation safety and escalation behavior. It runs a fixed set of synthetic cases through baseline and constrained prompts, then prepares outputs for manual scoring and reporting. The goal is to test safety-focused response behavior without making medical recommendations.
 
 ## What It Measures
