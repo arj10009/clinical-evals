@@ -33,3 +33,6 @@ python -m src.report
 - `outputs/model_outputs.jsonl`
 - `scoring/scoring_template.csv`
 - `reports/summary.md`
+
+## What now?
+Roadmap: [WHAT_NOW.md](./WHAT_NOW.md)
