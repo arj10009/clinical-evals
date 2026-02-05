@@ -36,3 +36,8 @@ python -m src.report
 
 ## What now?
 Roadmap: [WHAT_NOW.md](./WHAT_NOW.md)
+
+## Results
+- [Final report (PDF)](./reports/final_report.pdf)
+- [Case gallery (selected examples)](./reports/scored_case_gallery.md)
+- [Score summary](./reports/scored_summary.md)
