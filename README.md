@@ -1,5 +1,10 @@
 # Clinical Evals
 
+## Start here
+- **Read the results:** [Final report (PDF)](./reports/final_report.pdf)
+- **See concrete failures + deltas:** [Case gallery](./reports/scored_case_gallery.md)
+- **Where this goes next:** [WHAT_NOW roadmap](./WHAT_NOW.md)
+
 ## 30-second pitch
 This repo is a small clinical safety evaluation harness to practice the exact job I’m aiming for: **measuring whether a model under-triages or gives unsafe guidance in high-risk presentations**.
 
