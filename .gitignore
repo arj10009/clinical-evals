@@ -19,3 +19,4 @@ venv/
 
 # Large / generated artifacts (keep reports if you want)
 outputs/
+CHATGPT_IMPLEMENTATION_PLAN.md
