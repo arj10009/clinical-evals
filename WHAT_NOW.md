@@ -1,8 +1,10 @@
 # What now?
 
-This repo is an MVP “safety eval harness” comparing a **baseline** local model vs a **constrained** (policy-guided) variant on a small set of clinical-style cases, with manual scoring and reports.
+This repo is an MVP clinical conversation safety + escalation eval harness. It now stores **already-generated** per-model run artifacts under `runs/<model>/` and a **cross-model** comparison report under `cross_model/`.
 
-Below is the roadmap for turning this into something that looks and feels like real model-quality work: better coverage, harder tests, less “toy” behavior, and clearer evidence of trade-offs.
+Methodology details: see `METHODOLOGY.md`.
+
+Below is the roadmap for turning this into something that looks and feels like real model-quality work: better coverage, harder tests, less “toy” behavior, clearer trade-off measurement, and more credible labeling.
 
 ---
 
