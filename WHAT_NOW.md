@@ -1,10 +1,25 @@
 # What now?
 
-This repo is an MVP clinical conversation safety + escalation eval harness. It now stores **already-generated** per-model run artifacts under `runs/<model>/` and a **cross-model** comparison report under `cross_model/`.
+This repo is a clinical conversation safety + escalation eval harness. It stores per-model run artifacts under `runs/<model>/`, a cross-model comparison under `cross_model/`, and adversarial variant results under `runs/adversarial/`.
 
 Methodology details: see `METHODOLOGY.md`.
 
-Below is the roadmap for turning this into something that looks and feels like real model-quality work: better coverage, harder tests, less “toy” behavior, clearer trade-off measurement, and more credible labeling.
+---
+
+## Completed
+
+- [x] 30-case evaluation suite across 6 clinical buckets (chest pain, stroke, sepsis/meningitis, pregnancy, suicide/mental health, medications)
+- [x] Baseline vs. constrained prompting comparison across 3 models (Llama 3.1:8b, GPT-4.1-mini, GPT-5.2)
+- [x] Per-model reports with case galleries and PDFs
+- [x] Cross-model comparison with capability vs. constraint analysis
+- [x] Adversarial variants: 24 cases, 6 variant types, GPT-5.2 + GPT-4.1-mini scored
+- [x] Evidence pack gap analysis: sepsis bullet patch + validation (4/4 cases fixed)
+- [x] Cross-model adversarial comparison report
+- [x] Constrained prompt hardening (HIGH-risk override + exact emergency phrase)
+
+---
+
+Below is the roadmap for the remaining work.
 
 ---
 
@@ -121,12 +136,12 @@ These checks let you scale: you can run 500 cases and quickly surface the danger
 
 ## Suggested order of attack
 
-If you want the fastest credibility upgrade:
-1) Specialist-labeled gold (even a small batch)
-2) Adversarial variants + multi-turn cases
-3) Automated unsafe branching / under-triage checks
-4) Bigger suite with stratified metrics
-5) Inter-rater reliability
-6) Patch work with regression tracking
+With adversarial variants complete, the next highest-impact steps are:
 
-That sequence turns this from “cool personal project” into “this person is doing real evaluation work.”
+1) **Automated under-triage detection** — build detectors that flag dangerous model behavior without manual scoring, enabling scaling to 100+ cases
+2) **Multi-turn cases** — test whether models update triage as new information arrives across conversation turns
+3) **Specialist-labeled gold** — get 1–2 clinicians to independently label 10–15 cases
+4) **Bigger suite with stratified metrics** — expand beyond 30 cases, report by risk level, bucket, failure type, presentation style
+5) **Inter-rater reliability** — validate scoring consistency with a second rater
+
+That sequence turns this from "rigorous evaluation project" into "production-grade evaluation methodology."

@@ -21,6 +21,19 @@ A lightweight evaluation harness for **clinical conversation safety + escalation
 
 GPT-4.1-mini with evidence-bullet constraints achieves the highest composite score and 0% under-triage on emergency cases, outperforming GPT-5.2 baseline across every safety metric.
 
+### Adversarial Robustness
+
+This finding holds under adversarial conditions. 24 adversarial variants (symptom burial, confident minimizers, care refusal, authority override, plausible alternatives, ambiguity injection) were tested on GPT-5.2 and GPT-4.1-mini:
+
+| Model | Condition | Adversarial Accuracy | Hard Fail Rate | HIGH Under-Triage |
+|:------|:----------|:-------------------:|:--------------:|:-----------------:|
+| GPT-4.1-mini | baseline | 45.8% | 58.3% | 50.0% |
+| **GPT-4.1-mini** | **constrained** | **75.0%** | **16.7%** | **10.0%** |
+| GPT-5.2 | baseline | 45.8% | 33.3% | 55.0% |
+| GPT-5.2 | constrained | 66.7% | 4.2% | 20.0% |
+
+GPT-4.1-mini constrained outperforms GPT-5.2 baseline by +29.2% accuracy and −45.0% HIGH-risk under-triage under adversarial pressure. The evaluation also identified an evidence pack gap in sepsis (missing catch-all rule for fever with rigors), which was patched and validated.
+
 ---
 
 ## Start here (results)
@@ -35,6 +48,11 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 ### Cross-model comparison
 - [Cross-model report](./cross_model/cross_model_report.md) — capability vs. constraint analysis, per-bucket safety breakdowns, hard fail overlap, escalation accuracy
 
+### Adversarial evaluation (24 cases)
+- [Adversarial report](./runs/adversarial/adversarial_report.md) — 24 adversarial variants across 6 attack types, scored for GPT-5.2 and GPT-4.1-mini
+- [Cross-model adversarial comparison](./runs/adversarial/cross_model_adversarial_comparison.md) — does the constraint advantage survive adversarial pressure?
+- [Sepsis evidence gap analysis](./runs/adversarial/gpt5_2/analysis/failure_packet_sepsis_high_risk.md) — root cause analysis of systematic constrained failure
+
 ### Methodology
 - [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, known limitations
 
@@ -42,9 +60,10 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 
 ## Repo structure
 
-- `data/` — case set (`cases.csv`) and evidence bullets (`evidence_packs.json`)
-- `src/` — evaluation harness and reporting scripts
+- `data/` — case set (`cases.csv`), adversarial cases (`adversarial_cases.csv`), and evidence bullets (`evidence_packs.json`)
+- `src/` — evaluation harness, adversarial runner, analysis scripts, and reporting
 - `runs/<model>/` — per-model run artifacts (outputs, scores, reports)
+- `runs/adversarial/<model>/` — adversarial variant results and analysis
 - `cross_model/` — cross-model comparison script and generated report
 
 ---
@@ -74,7 +93,7 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — next steps include adversarial variants, automated under-triage detection, multi-turn cases, and specialist gold labels.
+See [WHAT_NOW.md](./WHAT_NOW.md) — next steps include automated under-triage detection, multi-turn cases, and specialist gold labels.
 
 ## Ethics and Limitations
 
