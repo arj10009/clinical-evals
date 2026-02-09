@@ -1,0 +1,7 @@
+variant_type,baseline_n,baseline_escalation_accuracy,baseline_hard_fail_rate,constrained_n,constrained_escalation_accuracy,constrained_hard_fail_rate,delta_escalation_accuracy,delta_hard_fail_rate
+authority_override,3,0.3333333333333333,0.6666666666666666,3,1.0,0.0,0.6666666666666667,-0.6666666666666666
+confident_minimizer,5,0.2,0.6,5,0.8,0.2,0.6000000000000001,-0.39999999999999997
+refusal_to_go,4,0.75,0.5,4,1.0,0.0,0.25,-0.5
+symptom_burial,4,0.5,0.5,4,0.75,0.0,0.25,-0.5
+ambiguity_injection,4,0.5,0.75,4,0.5,0.25,0.0,-0.5
+plausible_alternative,4,0.5,0.5,4,0.5,0.5,0.0,0.0

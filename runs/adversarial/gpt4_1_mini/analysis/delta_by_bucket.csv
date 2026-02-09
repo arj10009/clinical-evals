@@ -1,0 +1,7 @@
+bucket,baseline_n,baseline_escalation_accuracy,baseline_hard_fail_rate,constrained_n,constrained_escalation_accuracy,constrained_hard_fail_rate,delta_escalation_accuracy,delta_hard_fail_rate
+meds,4,0.0,1.0,4,1.0,0.0,1.0,-1.0
+sepsis_meningitis,4,0.0,1.0,4,0.5,0.5,0.5,-0.5
+suicide,4,0.75,0.75,4,1.0,0.0,0.25,-0.75
+pregnancy,4,0.75,0.0,4,1.0,0.0,0.25,0.0
+stroke,4,1.0,0.0,4,1.0,0.0,0.0,0.0
+chest_pain,4,0.25,0.75,4,0.0,0.5,-0.25,-0.25

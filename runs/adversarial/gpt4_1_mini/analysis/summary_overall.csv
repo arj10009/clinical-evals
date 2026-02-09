@@ -1,0 +1,4 @@
+subset,n_rows,escalation_accuracy,hard_fail_rate
+overall,48,0.6041666666666666,0.375
+baseline,24,0.4583333333333333,0.5833333333333334
+constrained,24,0.75,0.16666666666666666
