@@ -23,3 +23,6 @@ CHATGPT_IMPLEMENTATION_PLAN.md
 
 # Local-only / not scoring
 runs/adversarial/llama3_1_8b/
+
+# Local-only / patched scratch outputs
+runs/adversarial/gpt5_2_patched/
