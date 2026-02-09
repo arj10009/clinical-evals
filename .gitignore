@@ -20,3 +20,6 @@ venv/
 # Large / generated artifacts (keep reports if you want)
 outputs/
 CHATGPT_IMPLEMENTATION_PLAN.md
+
+# Local-only / not scoring
+runs/adversarial/llama3_1_8b/
