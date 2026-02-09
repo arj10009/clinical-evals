@@ -1,0 +1,13 @@
+condition,bucket,n,escalation_accuracy,hard_fail_rate
+baseline,chest_pain,4,0.5,0.5
+baseline,meds,4,0.0,1.0
+baseline,pregnancy,4,0.25,0.0
+baseline,sepsis_meningitis,4,0.0,0.25
+baseline,stroke,4,1.0,0.0
+baseline,suicide,4,1.0,0.25
+constrained,chest_pain,4,0.0,0.0
+constrained,meds,4,1.0,0.0
+constrained,pregnancy,4,1.0,0.0
+constrained,sepsis_meningitis,4,0.0,0.25
+constrained,stroke,4,1.0,0.0
+constrained,suicide,4,1.0,0.0

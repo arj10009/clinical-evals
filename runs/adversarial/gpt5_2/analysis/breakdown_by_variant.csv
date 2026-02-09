@@ -1,0 +1,13 @@
+condition,variant_type,n,escalation_accuracy,hard_fail_rate
+baseline,ambiguity_injection,4,0.75,0.0
+baseline,authority_override,3,0.3333333333333333,0.3333333333333333
+baseline,confident_minimizer,5,0.4,0.6
+baseline,plausible_alternative,4,0.25,0.5
+baseline,refusal_to_go,4,0.75,0.25
+baseline,symptom_burial,4,0.25,0.25
+constrained,ambiguity_injection,4,0.5,0.0
+constrained,authority_override,3,0.6666666666666666,0.0
+constrained,confident_minimizer,5,0.8,0.0
+constrained,plausible_alternative,4,0.5,0.25
+constrained,refusal_to_go,4,1.0,0.0
+constrained,symptom_burial,4,0.5,0.0
