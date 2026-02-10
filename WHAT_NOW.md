@@ -22,7 +22,7 @@ Methodology details: see `METHODOLOGY.md`.
 - [x] Phase 3 synthesis report with scaling strategy recommendations
 - [x] GPT-5.2 adversarial data reconstruction: model_outputs.jsonl rebuilt, constrained escalation extraction bug fixed, analysis artifacts regenerated
 - [x] Rubric refinement: tightened all 5 scoring dimensions based on 198-output LLM-judge disagreement analysis — actionability κ improved +0.177 (Fair→Moderate), hard fail κ improved +0.225 (Slight→Fair), safety κ improved +0.036; GPT-4.1-mini adversarial hard_fail κ reached 0.765 (Substantial)
-- [x] Multi-turn evaluation framework: 9 specialist-aligned cases (3 turns each) across 3 clinical domains — paediatrics/neonatology (3 cases), obstetrics/gynaecology (3 cases), psychiatry (3 cases). Each case embeds `specialist_domain` and `specialist_validation_note` for future specialist validation. Turn-specific evidence packs, conversation-history prompting, 3 trajectory detectors (escalation flip-flop, delayed escalation, final mismatch), 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run (54 records per model)
+- [x] Multi-turn evaluation framework: 9 specialist-aligned cases (3 turns each) across 3 trajectory types — Type A: escalate-to-emergency (MT01, MT04, MT07), Type B: stay-in-urgent/routine (MT02, MT05, MT08), Type C: non-monotonic with de-escalation (MT03, MT06, MT09). Gold label distribution: emergency_now 30%, urgent_same_day 41%, routine_visit 26%, self_care 4%. Tests calibration (sensitivity + specificity), not just emergency-catching. Turn-specific evidence packs, 3 trajectory detectors, 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run (54 records per model)
 
 ---
 
@@ -63,7 +63,7 @@ These are high-value because real patients don’t present like clean exam quest
 
 ## 3) Multi-turn cases ✅ BUILT
 
-9 specialist-aligned multi-turn cases are built and verified across 3 clinical domains (paediatrics/neonatology, obstetrics/gynaecology, psychiatry). Each case has 3 turns where risk escalates as new symptoms emerge. Cases are purpose-built for specialist validation — each embeds a `specialist_validation_note` identifying the clinical decision point where domain expert input is most valuable.
+9 specialist-aligned multi-turn cases are built and verified across 3 clinical domains (paediatrics/neonatology, obstetrics/gynaecology, psychiatry) with 3 trajectory types: escalate-to-emergency (3 cases), stay-in-urgent/routine (3 cases), and non-monotonic with de-escalation after medical review (3 cases). Gold label distribution: emergency_now 30%, urgent_same_day 41%, routine_visit 26%, self_care 4%. This tests calibration (sensitivity + specificity), not just emergency detection. Cases are purpose-built for specialist validation — each embeds a `specialist_validation_note` identifying the clinical decision point where domain expert input is most valuable.
 
 Ready to run: `DRY_RUN=0 python -m src.run_multiturn_eval`
 

@@ -121,13 +121,37 @@ Single-turn cases test a model's response to a complete clinical vignette, but r
 
 ### Case Structure
 
-Multi-turn cases are stored in `data/multiturn_cases.csv` with each row representing one conversational turn. There are 9 cases (3 turns each, 27 turns total, 54 outputs per model) across 4 specialist-aligned buckets: paediatrics (3 cases), pregnancy/O&G (3 cases), suicide (3 cases), and psychiatry (1 case). Each case follows a consistent clinical progression pattern: turn 1 presents an ambiguous or lower-acuity picture, turn 2 reveals key red-flag symptoms that change the clinical picture, and turn 3 either adds confirming information or introduces social pressure to test escalation stability.
+Multi-turn cases are stored in `data/multiturn_cases.csv` with each row representing one conversational turn. There are **9 cases (3 turns each, 27 turns total, 54 outputs per model) across 4 specialist-aligned buckets** (paediatrics, pregnancy/O&G, suicide, psychiatry) and mapped to **3 specialist domains** (paediatrics/neonatology, obstetrics/gynaecology, psychiatry). The 9 cases are organized into three trajectory types:
+
+**Type A: Escalate to Emergency** (3 cases: MT01, MT04, MT07)
+- Risk worsens across turns to `emergency_now`
+- Tests whether the model catches genuine emergencies unfolding
+
+**Type B: Stay in Urgent/Routine Range** (3 cases: MT02, MT05, MT08)
+- Symptoms worsen but never cross the emergency threshold
+- Tests whether the model resists over-escalation when escalation pressure mounts but risk remains bounded
+
+**Type C: Non-Monotonic Trajectories** (3 cases: MT03, MT06, MT09)
+- New information changes the clinical picture, allowing appropriate de-escalation
+- Tests whether the model updates appropriately when new information becomes available, including justified de-escalation
 
 The cases are deliberately designed for future specialist validation. Each case includes a `specialist_domain` field mapping it to one of three clinical specialties (paediatrics/neonatology, obstetrics/gynaecology, psychiatry) and a `specialist_validation_note` field identifying the specific clinical decision point where specialist input will resolve ambiguity in the gold label. Turn 1 gold escalations are intentionally set at thresholds where reasonable clinicians might disagree, making specialist review maximally informative.
 
 Each turn has its own gold escalation (`gold_escalation_at_turn`) reflecting what the correct triage should be given the cumulative information at that point. The gold escalation can increase across turns as new information arrives, but should only decrease if concrete clinical evidence justifies it (e.g., "I went to the ER and tests were normal"). Social reasons like cost, inconvenience, or time pressure are never valid reasons to downgrade.
 
-### Evidence Packs (Multi-Turn)
+**De-escalation and Medical Review:** In Type C cases (MT03, MT06, MT09), patients report having received professional medical attention that informs the clinical reassessment. For example, in MT03 turn 3, the child was assessed at an urgent care clinic; in MT06 turn 3, the patient received hospital treatment for postpartum haemorrhage; in MT09 turn 3, the psychiatrist restarted lithium. These scenarios test whether the model recognises that professional medical review is a valid clinical reason to de-escalate — unlike social pressure (cost, inconvenience, family pressure), which is not.
+
+### Design Rationale for Trajectory Variability
+
+Multi-turn cases test **calibration**, not just sensitivity. A model that outputs `emergency_now` for every case would score well on an all-emergency test set but would fail in practice due to over-triage and alert fatigue. The three trajectory types measure distinct capabilities:
+
+- **Type A (Escalate)**: Does the model catch genuine emergencies unfolding across conversational turns?
+- **Type B (Bounded Worsening)**: Does the model resist over-escalation when symptoms worsen without crossing the emergency threshold, avoiding unnecessary alarm when clinical judgment indicates intermediate urgency is appropriate?
+- **Type C (Non-Monotonic)**: Does the model update appropriately when new information changes the clinical picture, including justified de-escalation when professional medical review provides clinical reassurance?
+
+The **gold label distribution** across all cases reflects a realistic mix: `emergency_now` 30%, `urgent_same_day` 41%, `routine_visit` 26%, `self_care` 4%.
+
+**Constrained Prompt Risk Assignment:** In the constrained condition, the system message includes a `risk` parameter that depends on case type. Type A cases use `risk=HIGH`, which triggers a high-risk override that mechanically favours `emergency_now`. Type B and C cases use `risk=MED`, requiring the model to reason from evidence rather than relying on a safety override. This design tests whether the model's emergent judgement improves under constraint, or whether it depends on the override itself.
 
 Turn-specific evidence bullets are stored in `data/evidence_packs_multiturn.json`. Evidence packs expand across turns as the clinical picture develops: turn 1 provides basic triage bullets, turn 2 adds red-flag recognition bullets relevant to the new symptoms, and turn 3 includes the full set plus any additional confirmation bullets. This mirrors how a real triage system would surface relevant guidelines as the conversation progresses.
 
@@ -173,9 +197,9 @@ Multi-turn cases are aligned to three specialist domains, with existing single-t
 
 | Specialist | Multi-Turn Cases | Single-Turn Cases Available | Adversarial Cases Available |
 |:-----------|:-----------------|:----------------------------|:----------------------------|
-| Paediatrics / Neonatology | MT01 (neonatal fever), MT02 (toddler dehydration), MT03 (paediatric head injury) | 011–015 (sepsis/meningitis, partly paediatric-applicable) | A17–A20 (sepsis adversarial) |
-| Obstetrics / Gynaecology | MT04 (pre-eclampsia → HELLP), MT05 (PPROM + preterm labour), MT06 (postpartum haemorrhage) | 016–020 (pregnancy) | A13–A16 (pregnancy adversarial) |
-| Psychiatry | MT07 (adolescent NSSI → suicidal), MT08 (bereavement → preparatory behaviours), MT09 (acute mania) | 021–025 (suicide/mental health) | A09–A12 (suicide adversarial) |
+| Paediatrics / Neonatology | **MT01** (neonatal fever, Type A—escalate); **MT02** (toddler dehydration, Type B—bounded worsening); **MT03** (paediatric head injury, Type C—non-monotonic, medical review) | 011–015 (sepsis/meningitis, partly paediatric-applicable) | A17–A20 (sepsis adversarial) |
+| Obstetrics / Gynaecology | **MT04** (pre-eclampsia → HELLP, Type A—escalate); **MT05** (PPROM + preterm labour, Type B—bounded worsening); **MT06** (postpartum haemorrhage, Type C—non-monotonic, medical review) | 016–020 (pregnancy) | A13–A16 (pregnancy adversarial) |
+| Psychiatry | **MT07** (adolescent NSSI → suicidal, Type A—escalate); **MT08** (bereavement → preparatory behaviours, Type B—bounded worsening); **MT09** (acute mania, Type C—non-monotonic, medical review) | 021–025 (suicide/mental health) | A09–A12 (suicide adversarial) |
 
 ### Validation Protocol
 
