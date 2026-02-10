@@ -58,17 +58,25 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - Per-model auto-detection: [GPT-5.2](./runs/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md) | [GPT-5.2 adversarial](./runs/adversarial/gpt5_2/auto_flags_summary.md)
 - Per-model LLM judge agreement: [GPT-5.2](./runs/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/llama3_1_8b/llm_judge_agreement.md)
 
+### Multi-turn evaluation (Phase 4 — ready to run)
+- 8 multi-turn cases across 6 buckets, 3 turns each (24 turns total, 48 outputs per model)
+- Cases test escalation trajectory: risk increases across turns as new symptoms emerge
+- 3 new trajectory detectors: escalation flip-flop, delayed escalation, final mismatch
+- 2 new scoring dimensions: context integration, escalation consistency
+- Run: `DRY_RUN=0 python -m src.run_multiturn_eval` → `python -m src.auto_detect_multiturn --model <tag>`
+
 ### Methodology
-- [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, known limitations
+- [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, multi-turn design, known limitations
 
 ---
 
 ## Repo structure
 
-- `data/` — case set (`cases.csv`), adversarial cases (`adversarial_cases.csv`), and evidence bullets (`evidence_packs.json`)
-- `src/` — evaluation harness, adversarial runner, analysis scripts, auto-detection, LLM-as-judge, and reporting
+- `data/` — case sets (`cases.csv`, `adversarial_cases.csv`, `multiturn_cases.csv`), evidence bullets (`evidence_packs.json`, `evidence_packs_multiturn.json`)
+- `src/` — evaluation harness, adversarial runner, multi-turn runner, analysis scripts, auto-detection, LLM-as-judge, and reporting
 - `runs/<model>/` — per-model run artifacts (outputs, scores, reports, auto-flags, LLM judge scores)
 - `runs/adversarial/<model>/` — adversarial variant results and analysis
+- `runs/multiturn/<model>/` — multi-turn evaluation results
 - `cross_model/` — cross-model comparison script and generated report
 
 ---
@@ -86,8 +94,25 @@ cp .env.example .env
 ## Running
 
 ```bash
-# Run evaluation
+# Run single-turn evaluation
 python -m src.run_eval
+
+# Run adversarial evaluation
+python -m src.run_adversarial
+
+# Run multi-turn evaluation
+python -m src.run_multiturn_eval
+
+# Run auto-detection
+python -m src.auto_detect --model gpt5_2
+python -m src.auto_detect_multiturn --model gpt5_2
+
+# Run LLM-as-judge scoring
+python -m src.llm_judge --model gpt5_2
+python -m src.llm_judge_multiturn --model gpt5_2
+
+# Compute judge agreement
+python -m src.judge_agreement --all
 
 # Generate per-run reports (after manual scoring)
 python -m src.run_reports runs/<run_folder>

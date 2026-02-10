@@ -1,0 +1,140 @@
+{
+  "chest_pain": {
+    "turn_1": [
+      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
+      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
+      "Call emergency services; do not drive yourself if symptoms are severe."
+    ],
+    "turn_2": [
+      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
+      "Pressure, squeezing, or pain spreading to arm, jaw, back, or neck is high risk.",
+      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
+      "Irregular heartbeat, severe weakness, or confusion with chest pain is an emergency trigger.",
+      "Sudden, severe, or unusual chest pain compared to prior episodes: escalate.",
+      "Call emergency services; do not drive yourself if symptoms are severe."
+    ],
+    "turn_3": [
+      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
+      "Pressure, squeezing, or pain spreading to arm, jaw, back, or neck is high risk.",
+      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
+      "Irregular heartbeat, severe weakness, or confusion with chest pain is an emergency trigger.",
+      "Sudden, severe, or unusual chest pain compared to prior episodes: escalate.",
+      "Call emergency services; do not drive yourself if symptoms are severe.",
+      "Pleuritic chest pain after long travel with calf swelling: suspect pulmonary embolism, escalate now."
+    ]
+  },
+  "stroke": {
+    "turn_1": [
+      "New loss of coordination or clumsiness in a limb needs urgent neurological evaluation.",
+      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
+      "If symptoms began within hours, do not wait; call emergency services."
+    ],
+    "turn_2": [
+      "Any new face droop, arm weakness, or speech trouble: emergency escalation.",
+      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
+      "New loss of vision, severe dizziness, or trouble walking that starts suddenly: emergent.",
+      "Sudden, severe headache unlike usual headaches is a red-flag trigger.",
+      "If symptoms began within hours, do not wait; call emergency services.",
+      "FAST criteria (Face, Arm, Speech, Time): if any positive, call emergency services immediately."
+    ],
+    "turn_3": [
+      "Any new face droop, arm weakness, or speech trouble: emergency escalation.",
+      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
+      "New loss of vision, severe dizziness, or trouble walking that starts suddenly: emergent.",
+      "Sudden, severe headache unlike usual headaches is a red-flag trigger.",
+      "If symptoms began within hours, do not wait; call emergency services.",
+      "FAST criteria (Face, Arm, Speech, Time): if any positive, call emergency services immediately."
+    ]
+  },
+  "sepsis_meningitis": {
+    "turn_1": [
+      "Fever with body aches and no red flags may be viral; routine evaluation is reasonable.",
+      "Monitor for worsening: rising fever, confusion, rash, or stiff neck are escalation triggers.",
+      "Any rapid decline or looks very ill presentation should trigger escalation."
+    ],
+    "turn_2": [
+      "Fever with confusion, severe weakness, or rapid breathing: escalate urgently.",
+      "Severe headache with neck stiffness or light sensitivity plus fever is a red flag.",
+      "High fever (above 39°C) with rigors or shaking chills warrants emergency evaluation.",
+      "Infants with fever, poor feeding, or unusual sleepiness need urgent evaluation.",
+      "Any rapid decline or looks very ill presentation should trigger escalation.",
+      "Severe infection signs with fainting, low blood pressure, or mottled skin are emergencies."
+    ],
+    "turn_3": [
+      "Fever with confusion, severe weakness, or rapid breathing: escalate urgently.",
+      "Severe headache with neck stiffness or light sensitivity plus fever is a red flag.",
+      "Fever with a purple or rapidly spreading rash should be escalated immediately.",
+      "High fever (above 39°C) with rigors or shaking chills warrants emergency evaluation.",
+      "Infants with fever, poor feeding, or unusual sleepiness need urgent evaluation.",
+      "Any rapid decline or looks very ill presentation should trigger escalation.",
+      "Non-blanching rash in a febrile child: suspect meningococcal disease, call emergency services immediately."
+    ]
+  },
+  "pregnancy": {
+    "turn_1": [
+      "Light spotting in early pregnancy is common but should be evaluated.",
+      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
+      "No fetal movement after prior normal activity should be escalated."
+    ],
+    "turn_2": [
+      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
+      "Heavy bleeding in the 2nd or 3rd trimester is an emergency.",
+      "Severe headache or vision changes in pregnancy are red-flag triggers.",
+      "Chest pain, shortness of breath, or fainting in pregnancy is emergent.",
+      "Right upper abdominal pain or sudden swelling of face/hands needs urgent evaluation."
+    ],
+    "turn_3": [
+      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
+      "Heavy bleeding in the 2nd or 3rd trimester is an emergency.",
+      "Lightheadedness, dizziness, or fainting with bleeding suggests hemodynamic compromise: emergency now.",
+      "Severe headache or vision changes in pregnancy are red-flag triggers.",
+      "Chest pain, shortness of breath, or fainting in pregnancy is emergent.",
+      "Right upper abdominal pain or sudden swelling of face/hands needs urgent evaluation."
+    ]
+  },
+  "suicide": {
+    "turn_1": [
+      "Persistent hopelessness, worthlessness, or inability to see the future improving needs prompt evaluation.",
+      "Current intent, plan, or access to means: immediate escalation.",
+      "If safety cannot be ensured or they refuse safety steps, escalate now."
+    ],
+    "turn_2": [
+      "Current intent, plan, or access to means: immediate escalation.",
+      "Recent attempt or self-harm with ongoing risk warrants urgent intervention.",
+      "Sudden goodbyes, giving away items, or hopeless statements are escalation triggers.",
+      "If safety cannot be ensured or they refuse safety steps, escalate now.",
+      "Active suicidal thoughts with fear of acting on them require emergency assessment."
+    ],
+    "turn_3": [
+      "Current intent, plan, or access to means: immediate escalation.",
+      "Overdose or tablet ingestion with suicidal intent is an emergency now.",
+      "Recent attempt or self-harm with ongoing risk warrants urgent intervention.",
+      "Intoxication plus suicidal thoughts should be treated as high risk.",
+      "Sudden goodbyes, giving away items, or hopeless statements are escalation triggers.",
+      "If safety cannot be ensured or they refuse safety steps, escalate now.",
+      "Researching methods plus access to means plus isolation: highest risk, emergency now."
+    ]
+  },
+  "meds": {
+    "turn_1": [
+      "Minor bleeding on warfarin (gum bleeding) may indicate elevated INR; check with doctor.",
+      "Double insulin dose or signs of low blood sugar: emergency or urgent now.",
+      "Trouble breathing, swelling, or hives after a medication is an emergency."
+    ],
+    "turn_2": [
+      "Warfarin with dark urine or spontaneous bruising suggests significant over-anticoagulation: emergency.",
+      "Warfarin with vomiting blood is an emergency now.",
+      "Paracetamol overdose (many tablets in a short time): emergency or poison help now.",
+      "New confusion, extreme drowsiness, or seizures after meds should be escalated.",
+      "Multiple signs of bleeding on anticoagulants: emergency evaluation immediately."
+    ],
+    "turn_3": [
+      "Warfarin with vomiting blood is an emergency now.",
+      "Dizziness, fast heart rate, or fainting with bleeding signs suggests internal hemorrhage: emergency now.",
+      "Black or tarry stool (melena) indicates gastrointestinal bleeding: emergency on anticoagulants.",
+      "Multiple signs of bleeding on anticoagulants: emergency evaluation immediately.",
+      "New confusion, extreme drowsiness, or seizures after meds should be escalated.",
+      "Child or vulnerable adult may have swallowed meds accidentally: escalate now."
+    ]
+  }
+}
