@@ -53,9 +53,9 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - [Cross-model adversarial comparison](./runs/adversarial/cross_model_adversarial_comparison.md) — does the constraint advantage survive adversarial pressure?
 - [Sepsis evidence gap analysis](./runs/adversarial/gpt5_2/analysis/failure_packet_sepsis_high_risk.md) — root cause analysis of systematic constrained failure
 
-### Automated detection & rubric validation (Phase 3)
-- [Phase 3 Synthesis Report](./runs/phase3_synthesis_report.md) — rule-based detectors + LLM-as-judge inter-rater reliability analysis
-- Per-model auto-detection: [GPT-5.2](./runs/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md)
+### Automated detection, rubric validation & refinement (Phase 3)
+- [Phase 3 Synthesis Report](./runs/phase3_synthesis_report.md) — rule-based detectors + LLM-as-judge inter-rater reliability + rubric refinement based on disagreement analysis
+- Per-model auto-detection: [GPT-5.2](./runs/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md) | [GPT-5.2 adversarial](./runs/adversarial/gpt5_2/auto_flags_summary.md)
 - Per-model LLM judge agreement: [GPT-5.2](./runs/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/llama3_1_8b/llm_judge_agreement.md)
 
 ### Methodology
@@ -98,7 +98,7 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — next steps include multi-turn cases, specialist gold labels, and rubric refinement based on LLM-judge findings.
+See [WHAT_NOW.md](./WHAT_NOW.md) — rubric refinement is complete; next steps include re-running the LLM judge with the refined rubric, multi-turn cases, and specialist gold labels.
 
 ## Ethics and Limitations
 
