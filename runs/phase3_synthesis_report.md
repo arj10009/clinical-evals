@@ -18,20 +18,20 @@ Together, these layers establish a path from manual-only evaluation (30 cases) t
 | Model | Suite | Total Flags | Critical | Moderate | Mild |
 |-------|-------|-------------|----------|----------|------|
 | GPT-5.2 | Original 30-case | 10 | 8 | 1 | 1 |
-| GPT-5.2 | Adversarial | 2 | 2 | 0 | 0 |
+| GPT-5.2 | Adversarial | 27 | 26 | 1 | 0 |
 | GPT-4.1-mini | Original 30-case | 7 | 3 | 4 | 0 |
 | GPT-4.1-mini | Adversarial | 14 | 8 | 6 | 0 |
 | Llama 3.1:8b | Original 30-case | 6 | 1 | 5 | 0 |
 
 ### Key findings
 
-**Under-triage detector** correctly identified the known failure cases: A17 and A20 (sepsis under-triage in GPT-4.1-mini adversarial), plus cases in GPT-5.2 original where baseline outputs under-escalated. Every under-triage flag aligned with a manually-scored hard fail — zero false positives on the most critical detector.
+**Under-triage detector** correctly identified known failure cases across both adversarial suites: A17–A20 in GPT-4.1-mini adversarial (sepsis under-triage) and A17–A20 in GPT-5.2 adversarial (4 cases choosing urgent_same_day over emergency_now). In GPT-5.2 original, the detector also caught baseline outputs that under-escalated. Every under-triage flag aligned with a manually-scored hard fail — zero false positives on the most critical detector.
 
-**Unsafe phrase detector** caught minimizing language like "over-the-counter" and "not an emergency" in responses to HIGH-risk emergency cases. Most flags concentrated in baseline conditions, confirming that constrained prompting successfully suppresses unsafe phrasing.
+**Unsafe phrase detector** caught minimizing language like "over-the-counter," "wait and see," "sleep it off," and OTC medication recommendations in responses to HIGH-risk emergency cases. In GPT-5.2 adversarial, 10 critical unsafe-phrase flags appeared — all in baseline conditions, confirming that constrained prompting successfully suppresses unsafe phrasing even under adversarial pressure.
 
-**Format compliance** flagged 3 cases in GPT-4.1-mini adversarial where the required emergency phrase was missing — all known hard fails (A10, A17, A20).
+**Format compliance** flagged 3 cases in GPT-4.1-mini adversarial where the required emergency phrase was missing — all known hard fails (A10, A17, A20). GPT-5.2 adversarial showed a much broader pattern: 12 constrained outputs missing the required emergency phrase, indicating that GPT-5.2's constrained responses often use alternative emergency language rather than the exact contractual phrasing.
 
-**Grounding violations** were rare, suggesting both GPT models generally avoid fabricating dosing details — a direct result of the constrained prompt explicitly prohibiting it.
+**Grounding violations** were rare across all models and suites, suggesting both GPT models generally avoid fabricating dosing details — a direct result of the constrained prompt explicitly prohibiting it.
 
 ### Assessment
 
@@ -132,13 +132,15 @@ After analyzing disagreement patterns across all 198 scored outputs, we refined 
 
 The "before" kappa values are from the initial LLM-as-judge run with the original rubric. The "after" values are from re-running with the refined RUBRIC_PROMPT.
 
-| Metric | Avg κ (before) | Avg κ (after) | Delta |
-|--------|---------------|--------------|-------|
-| Safety | 0.412 | 0.448 | +0.036 |
-| Actionability | 0.231 | 0.408 | **+0.177** |
-| Uncertainty | 0.295 | 0.303 | +0.008 |
-| Hard Fail | 0.078 | 0.303 | **+0.225** |
-| Grounding | 0.126 | 0.092 | −0.034 |
+| Metric | Avg κ (before, 4 datasets) | Avg κ (after, 5 datasets) | Delta |
+|--------|---------------------------|--------------------------|-------|
+| Safety | 0.412 | 0.505 | **+0.093** |
+| Actionability | 0.231 | 0.418 | **+0.187** |
+| Hard Fail | 0.078 | 0.342 | **+0.264** |
+| Uncertainty | 0.295 | 0.231 | −0.064 |
+| Grounding | 0.126 | 0.093 | −0.033 |
+
+Note: "before" averages are across 4 datasets (GPT-5.2 adversarial was unavailable). "After" averages include all 5 datasets with the reconstructed GPT-5.2 adversarial data.
 
 ### Per-dataset breakdown (after refinement)
 
@@ -148,18 +150,19 @@ The "before" kappa values are from the initial LLM-as-judge run with the origina
 | GPT-4.1-mini original (60) | 0.422 | 0.072 | 0.507 | 0.279 | 0.140 |
 | Llama 3.1:8b original (30) | 0.135 | 0.215 | 0.239 | 0.255 | 0.378 |
 | GPT-4.1-mini adversarial (48) | 0.742 | 0.000 | 0.628 | 0.152 | 0.765 |
+| GPT-5.2 adversarial (48) | 0.731 | 0.094 | 0.459 | -0.059 | 0.500 |
 
 ### What improved and what didn't
 
-**Actionability improved substantially (+0.177 avg κ).** The 3-branch threshold and timeline requirement gave the judge a concrete anchor. GPT-4.1-mini original jumped from κ=0.191 to 0.507 (Fair→Moderate), and GPT-4.1-mini adversarial jumped from 0.349 to 0.628 (Fair→Substantial).
+**Safety improved substantially (+0.093 avg κ).** The escalation-match-but-risky-text distinction was especially effective on adversarial cases: GPT-4.1-mini adversarial safety κ jumped from 0.477 to 0.742 (Substantial), and GPT-5.2 adversarial achieved κ=0.731 (Substantial) on its first judge run. Both adversarial datasets now have Substantial safety agreement, validating that the refined rubric captures the key safety distinctions.
 
-**Hard Fail improved substantially (+0.225 avg κ).** The explicit 2-level under-triage auto-fail rule produced the most dramatic single improvement: GPT-4.1-mini adversarial hard_fail κ went from 0.200 to 0.765 (Slight→Substantial). The codified rules give the judge clear decision boundaries instead of relying on subjective "would this induce harm?" judgments.
+**Actionability improved substantially (+0.187 avg κ).** The 3-branch threshold and timeline requirement gave the judge a concrete anchor. GPT-4.1-mini original jumped from κ=0.191 to 0.507 (Fair→Moderate), GPT-4.1-mini adversarial from 0.349 to 0.628 (Fair→Substantial), and GPT-5.2 adversarial achieved κ=0.459 (Moderate).
 
-**Safety improved modestly (+0.036 avg κ).** The escalation-match-but-risky-text distinction helped on adversarial cases (GPT-4.1-mini adversarial safety κ jumped from 0.477 to 0.742, reaching Substantial agreement). On original cases the improvement was smaller, partly because the refined rubric now catches more subtle text-level safety issues that the old rubric ignored.
+**Hard Fail improved substantially (+0.264 avg κ).** The explicit 2-level under-triage auto-fail rule produced the most dramatic improvements: GPT-4.1-mini adversarial hard_fail κ went from 0.200 to 0.765 (Slight→Substantial), and GPT-5.2 adversarial achieved κ=0.500 (Moderate). The codified rules give the judge clear decision boundaries instead of relying on subjective "would this induce harm?" judgments.
 
-**Uncertainty was roughly flat (+0.008 avg κ).** The diagnosis-confidence vs care-need-confidence distinction was helpful but the underlying judgments remain inherently subjective.
+**Uncertainty decreased (−0.064 avg κ).** The GPT-5.2 adversarial dataset pulled the average down (κ=-0.059, likely a ceiling effect — most outputs scored 2). The diagnosis-confidence vs care-need-confidence distinction was helpful on some datasets but the underlying judgments remain inherently subjective.
 
-**Grounding decreased slightly (−0.034 avg κ).** The baseline vs constrained split may have introduced new judgment calls for the LLM judge on baseline outputs. Grounding kappa remains dominated by ceiling effects (most outputs score 2).
+**Grounding was roughly flat (−0.033 avg κ).** Grounding kappa remains dominated by ceiling effects across all datasets (most outputs score 2), making it difficult for any rubric change to move the needle.
 
 ---
 
@@ -168,7 +171,7 @@ The "before" kappa values are from the initial LLM-as-judge run with the origina
 - **Rule-based detectors:** 4 regex/rule-based checkers run on model_outputs.jsonl files
 - **LLM-as-judge:** GPT-5.2 at temperature=0, given case metadata + model response + scoring rubric, returns structured JSON scores
 - **Agreement statistics:** Exact agreement rate + Cohen's kappa (chance-adjusted) per metric
-- **Coverage:** 198 scored outputs across 4 model×suite combinations (GPT-5.2 original, GPT-4.1-mini original, GPT-4.1-mini adversarial, Llama 3.1:8b original baseline-only)
+- **Coverage:** 246 scored outputs across 5 model×suite combinations (GPT-5.2 original, GPT-5.2 adversarial, GPT-4.1-mini original, GPT-4.1-mini adversarial, Llama 3.1:8b original baseline-only)
 - **Total API cost:** ~$3-4 for all LLM judge runs (~174,000 prompt tokens + ~23,000 completion tokens)
 
 ---
