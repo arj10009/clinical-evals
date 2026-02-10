@@ -16,6 +16,10 @@ Methodology details: see `METHODOLOGY.md`.
 - [x] Evidence pack gap analysis: sepsis bullet patch + validation (4/4 cases fixed)
 - [x] Cross-model adversarial comparison report
 - [x] Constrained prompt hardening (HIGH-risk override + exact emergency phrase)
+- [x] Rule-based automated detectors: under-triage, unsafe phrases, format compliance, grounding violations
+- [x] LLM-as-judge scoring: GPT-5.2 replicates human rubric across 198 outputs, measuring inter-rater reliability
+- [x] Rubric validation: Cohen's kappa analysis identifying safety (κ=0.41) as strongest dimension, actionability as weakest
+- [x] Phase 3 synthesis report with scaling strategy recommendations
 
 ---
 
@@ -136,12 +140,12 @@ These checks let you scale: you can run 500 cases and quickly surface the danger
 
 ## Suggested order of attack
 
-With adversarial variants complete, the next highest-impact steps are:
+With automated detection and LLM-as-judge complete, the next highest-impact steps are:
 
-1) **Automated under-triage detection** — build detectors that flag dangerous model behavior without manual scoring, enabling scaling to 100+ cases
+1) **Rubric refinement** — use LLM-judge disagreement data to tighten actionability criteria (define "too many branches" concretely) and codify hard_fail thresholds
 2) **Multi-turn cases** — test whether models update triage as new information arrives across conversation turns
-3) **Specialist-labeled gold** — get 1–2 clinicians to independently label 10–15 cases
-4) **Bigger suite with stratified metrics** — expand beyond 30 cases, report by risk level, bucket, failure type, presentation style
-5) **Inter-rater reliability** — validate scoring consistency with a second rater
+3) **Specialist-labeled gold** — get 1–2 clinicians to independently label 10–15 cases (this also validates rubric from a clinical perspective)
+4) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
+5) **Inter-rater reliability** — the LLM-as-judge data already provides a baseline (κ=0.2–0.5); add a second human rater for stronger validation
 
 That sequence turns this from "rigorous evaluation project" into "production-grade evaluation methodology."

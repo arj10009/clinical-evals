@@ -53,6 +53,11 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - [Cross-model adversarial comparison](./runs/adversarial/cross_model_adversarial_comparison.md) — does the constraint advantage survive adversarial pressure?
 - [Sepsis evidence gap analysis](./runs/adversarial/gpt5_2/analysis/failure_packet_sepsis_high_risk.md) — root cause analysis of systematic constrained failure
 
+### Automated detection & rubric validation (Phase 3)
+- [Phase 3 Synthesis Report](./runs/phase3_synthesis_report.md) — rule-based detectors + LLM-as-judge inter-rater reliability analysis
+- Per-model auto-detection: [GPT-5.2](./runs/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md)
+- Per-model LLM judge agreement: [GPT-5.2](./runs/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/llama3_1_8b/llm_judge_agreement.md)
+
 ### Methodology
 - [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, known limitations
 
@@ -61,8 +66,8 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 ## Repo structure
 
 - `data/` — case set (`cases.csv`), adversarial cases (`adversarial_cases.csv`), and evidence bullets (`evidence_packs.json`)
-- `src/` — evaluation harness, adversarial runner, analysis scripts, and reporting
-- `runs/<model>/` — per-model run artifacts (outputs, scores, reports)
+- `src/` — evaluation harness, adversarial runner, analysis scripts, auto-detection, LLM-as-judge, and reporting
+- `runs/<model>/` — per-model run artifacts (outputs, scores, reports, auto-flags, LLM judge scores)
 - `runs/adversarial/<model>/` — adversarial variant results and analysis
 - `cross_model/` — cross-model comparison script and generated report
 
@@ -93,11 +98,11 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — next steps include automated under-triage detection, multi-turn cases, and specialist gold labels.
+See [WHAT_NOW.md](./WHAT_NOW.md) — next steps include multi-turn cases, specialist gold labels, and rubric refinement based on LLM-judge findings.
 
 ## Ethics and Limitations
 
 - All cases are synthetic — not real patient data
 - Not medical advice and not for clinical use
-- Single-rater manual scoring (inter-rater reliability planned)
+- Single-rater manual scoring, validated with LLM-as-judge inter-rater reliability (Cohen's κ ranges from 0.2–0.5 by metric)
 - 30-case sample size is directional, not statistically powered
