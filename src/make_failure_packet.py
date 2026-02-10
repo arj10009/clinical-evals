@@ -1,6 +1,16 @@
 from __future__ import annotations
 
-"""Generate markdown failure packet for sepsis HIGH-risk adversarial cases.
+"""Generate markdown failure packet for constrained HIGH-risk rule failures.
+
+This packet is data-driven:
+- Reads runs/adversarial/{model}/analysis/constrained_high_risk_rule_failures.csv
+  (written by src.analyze_adversarial_deltas)
+- For each failing case_id, includes:
+  - adversarial prompt
+  - evidence bullets for its bucket
+  - baseline output
+  - constrained output
+  - recorded contract checks
 
 Usage:
     python -m src.make_failure_packet --model gpt5_2
@@ -15,11 +25,10 @@ from pathlib import Path
 
 CASES_CSV = Path("data/adversarial_cases.csv")
 EVIDENCE_JSON = Path("data/evidence_packs.json")
-TARGET_CASES = {"A17", "A18", "A19", "A20"}
 
 
 def load_cases() -> dict[str, dict]:
-    out = {}
+    out: dict[str, dict] = {}
     with CASES_CSV.open("r", encoding="utf-8") as f:
         r = csv.DictReader(f)
         for row in r:
@@ -33,7 +42,7 @@ def load_evidence() -> dict[str, list[str]]:
 
 
 def load_scores(path: Path) -> dict[tuple[str, str], dict]:
-    out = {}
+    out: dict[tuple[str, str], dict] = {}
     with path.open("r", encoding="utf-8") as f:
         r = csv.DictReader(f)
         for row in r:
@@ -42,7 +51,7 @@ def load_scores(path: Path) -> dict[tuple[str, str], dict]:
 
 
 def load_outputs(path: Path) -> dict[tuple[str, str], dict]:
-    out = {}
+    out: dict[tuple[str, str], dict] = {}
     with path.open("r", encoding="utf-8") as f:
         for line in f:
             if not line.strip():
@@ -53,33 +62,72 @@ def load_outputs(path: Path) -> dict[tuple[str, str], dict]:
     return out
 
 
+def load_high_risk_failures(path: Path) -> list[str]:
+    """Return failing case_ids in sorted order."""
+    if not path.exists():
+        raise SystemExit(
+            f"Missing failures CSV: {path}\n"
+            f"Run: python -m src.analyze_adversarial_deltas --model <model>"
+        )
+
+    df: list[dict] = []
+    with path.open("r", encoding="utf-8") as f:
+        r = csv.DictReader(f)
+        for row in r:
+            df.append(row)
+
+    case_ids = sorted({(row.get("case_id") or "").strip() for row in df if (row.get("case_id") or "").strip()})
+    return case_ids
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate sepsis failure packet")
+    parser = argparse.ArgumentParser(description="Generate HIGH-risk rule failure packet (data-driven)")
     parser.add_argument("--model", required=True, help="Model tag, e.g. gpt5_2 or gpt4_1_mini")
     args = parser.parse_args()
 
     scores_csv = Path(f"runs/adversarial/{args.model}/scored_results.csv")
     outputs_jsonl = Path(f"runs/adversarial/{args.model}/model_outputs.jsonl")
-    out_md = Path(f"runs/adversarial/{args.model}/analysis/failure_packet_sepsis_high_risk.md")
+    failures_csv = Path(f"runs/adversarial/{args.model}/analysis/constrained_high_risk_rule_failures.csv")
+
+    out_md = Path(f"runs/adversarial/{args.model}/analysis/failure_packet_high_risk_rule_failures.md")
 
     cases = load_cases()
     evidence = load_evidence()
     scores = load_scores(scores_csv)
     outputs = load_outputs(outputs_jsonl)
 
+    failing_case_ids = load_high_risk_failures(failures_csv)
+
     out_md.parent.mkdir(parents=True, exist_ok=True)
 
-    lines = []
-    lines.append(f"# Sepsis high-risk rule failures (A17–A20) — {args.model}\n")
-    lines.append("These are the four adversarial sepsis cases where the constrained run did NOT escalate to emergency_now.\n")
+    lines: list[str] = []
+    lines.append(f"# HIGH-risk rule failures — {args.model}\n")
 
-    for cid in ["A17", "A18", "A19", "A20"]:
+    if not failing_case_ids:
+        lines.append("No constrained HIGH-risk rule failures were found.\n")
+        out_md.write_text("\n".join(lines), encoding="utf-8")
+        print("Wrote:", out_md)
+        return
+
+    lines.append(
+        "These are the constrained-run cases where risk == HIGH but the output did NOT escalate to emergency_now.\n"
+    )
+    lines.append(f"Failing case_ids: {', '.join(failing_case_ids)}\n")
+
+    for cid in failing_case_ids:
+        if cid not in cases:
+            # Should not happen, but keep packet robust
+            lines.append("\n---\n")
+            lines.append(f"## {cid}\n")
+            lines.append("WARNING: case_id not found in data/adversarial_cases.csv\n")
+            continue
+
         c = cases[cid]
-        bucket = c["bucket"]
-        risk = c["risk"]
-        gold = c["gold_escalation"]
-        variant = c["variant_type"]
-        question = c["question"]
+        bucket = c.get("bucket", "")
+        risk = c.get("risk", "")
+        gold = c.get("gold_escalation", "")
+        variant = c.get("variant_type", "")
+        question = c.get("question", "")
 
         cons_out = outputs.get((cid, "constrained"), {}).get("model_response_text", "")
         base_out = outputs.get((cid, "baseline"), {}).get("model_response_text", "")
@@ -100,14 +148,18 @@ def main() -> None:
 
         lines.append("\n---\n")
         lines.append(f"## {cid} ({bucket} | {variant} | risk={risk} | gold={gold})\n")
+
         lines.append("### Adversarial prompt\n")
-        lines.append(question.strip() + "\n\n")
+        lines.append(question.strip() + "\n")
 
         lines.append("### Evidence bullets for this bucket\n")
         bullets = evidence.get(bucket, [])
-        for i, b in enumerate(bullets, start=1):
-            lines.append(f"{i}. {b}")
-        lines.append("\n")
+        if bullets:
+            for i, b in enumerate(bullets, start=1):
+                lines.append(f"{i}. {b}")
+        else:
+            lines.append("(No evidence bullets found for this bucket.)")
+        lines.append("")
 
         lines.append("### Baseline output\n")
         lines.append("```")

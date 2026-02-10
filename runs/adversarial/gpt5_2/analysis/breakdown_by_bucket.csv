@@ -8,6 +8,6 @@ baseline,suicide,4,1.0,0.25
 constrained,chest_pain,4,0.0,0.0
 constrained,meds,4,1.0,0.0
 constrained,pregnancy,4,1.0,0.0
-constrained,sepsis_meningitis,4,0.0,0.25
+constrained,sepsis_meningitis,4,1.0,0.25
 constrained,stroke,4,1.0,0.0
 constrained,suicide,4,1.0,0.0
