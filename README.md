@@ -59,14 +59,15 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - Per-model LLM judge agreement: [GPT-5.2](./runs/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/llama3_1_8b/llm_judge_agreement.md)
 
 ### Multi-turn evaluation (Phase 4 — ready to run)
-- 8 multi-turn cases across 6 buckets, 3 turns each (24 turns total, 48 outputs per model)
-- Cases test escalation trajectory: risk increases across turns as new symptoms emerge
-- 3 new trajectory detectors: escalation flip-flop, delayed escalation, final mismatch
+- 9 specialist-aligned multi-turn cases across 4 domains: paediatrics/neonatology (3), obstetrics/gynaecology (3), psychiatry (3)
+- 3 turns each (27 turns total, 54 outputs per model) — risk escalates across turns as new symptoms emerge
+- Cases designed for future specialist validation: each includes `specialist_domain` and `specialist_validation_note` identifying the clinical decision point where domain expert input resolves gold label ambiguity
+- 3 trajectory detectors: escalation flip-flop, delayed escalation, final mismatch
 - 2 new scoring dimensions: context integration, escalation consistency
 - Run: `DRY_RUN=0 python -m src.run_multiturn_eval` → `python -m src.auto_detect_multiturn --model <tag>`
 
 ### Methodology
-- [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, multi-turn design, known limitations
+- [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, multi-turn design, specialist validation design, known limitations
 
 ---
 
@@ -123,7 +124,7 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — rubric refinement is complete; next steps include re-running the LLM judge with the refined rubric, multi-turn cases, and specialist gold labels.
+See [WHAT_NOW.md](./WHAT_NOW.md) — multi-turn framework is built and specialist-aligned; next steps include running the multi-turn eval live, specialist validation with domain experts (paediatrics, O&G, psychiatry), and scaling the suite.
 
 ## Ethics and Limitations
 

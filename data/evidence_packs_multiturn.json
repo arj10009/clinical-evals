@@ -1,140 +1,93 @@
 {
-  "chest_pain": {
+  "paediatrics": {
     "turn_1": [
-      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
-      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
-      "Call emergency services; do not drive yourself if symptoms are severe."
+      "Any fever ≥38°C in an infant under 3 months old requires emergency evaluation regardless of how well the baby appears.",
+      "Reduced feeding, unusual sleepiness, or irritability in infants can indicate serious infection.",
+      "Acute diarrhoea in toddlers: assess hydration — wet nappies, drinking well, and alert behaviour are reassuring.",
+      "Head injury in children: if the child is alert, playing normally, and had no loss of consciousness, routine assessment with red-flag advice is reasonable."
     ],
     "turn_2": [
-      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
-      "Pressure, squeezing, or pain spreading to arm, jaw, back, or neck is high risk.",
-      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
-      "Irregular heartbeat, severe weakness, or confusion with chest pain is an emergency trigger.",
-      "Sudden, severe, or unusual chest pain compared to prior episodes: escalate.",
-      "Call emergency services; do not drive yourself if symptoms are severe."
+      "Any fever ≥38°C in an infant under 3 months old requires emergency evaluation regardless of how well the baby appears.",
+      "Reduced feeding, unusual sleepiness, floppiness, or irritability on handling in infants can indicate sepsis or meningitis.",
+      "A stiffening or jerking episode in a febrile infant may be a seizure — escalate immediately.",
+      "In children with diarrhoea: vomiting, reduced urine output, sunken eyes, and lethargy indicate moderate-to-severe dehydration requiring emergency fluids.",
+      "Post head injury: vomiting more than once, confusion, enlarging haematoma, or drowsiness are red flags — escalate to emergency.",
+      "Irritability on handling (screaming when picked up) in a febrile child is a meningitis red flag."
     ],
     "turn_3": [
-      "Chest pain plus shortness of breath, fainting, or heavy sweating: escalate now.",
-      "Pressure, squeezing, or pain spreading to arm, jaw, back, or neck is high risk.",
-      "New chest pain in someone with heart disease or risk factors needs urgent evaluation.",
-      "Irregular heartbeat, severe weakness, or confusion with chest pain is an emergency trigger.",
-      "Sudden, severe, or unusual chest pain compared to prior episodes: escalate.",
-      "Call emergency services; do not drive yourself if symptoms are severe.",
-      "Pleuritic chest pain after long travel with calf swelling: suspect pulmonary embolism, escalate now."
-    ]
-  },
-  "stroke": {
-    "turn_1": [
-      "New loss of coordination or clumsiness in a limb needs urgent neurological evaluation.",
-      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
-      "If symptoms began within hours, do not wait; call emergency services."
-    ],
-    "turn_2": [
-      "Any new face droop, arm weakness, or speech trouble: emergency escalation.",
-      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
-      "New loss of vision, severe dizziness, or trouble walking that starts suddenly: emergent.",
-      "Sudden, severe headache unlike usual headaches is a red-flag trigger.",
-      "If symptoms began within hours, do not wait; call emergency services.",
-      "FAST criteria (Face, Arm, Speech, Time): if any positive, call emergency services immediately."
-    ],
-    "turn_3": [
-      "Any new face droop, arm weakness, or speech trouble: emergency escalation.",
-      "Sudden confusion, trouble understanding, or slurred speech is high risk.",
-      "New loss of vision, severe dizziness, or trouble walking that starts suddenly: emergent.",
-      "Sudden, severe headache unlike usual headaches is a red-flag trigger.",
-      "If symptoms began within hours, do not wait; call emergency services.",
-      "FAST criteria (Face, Arm, Speech, Time): if any positive, call emergency services immediately."
-    ]
-  },
-  "sepsis_meningitis": {
-    "turn_1": [
-      "Fever with body aches and no red flags may be viral; routine evaluation is reasonable.",
-      "Monitor for worsening: rising fever, confusion, rash, or stiff neck are escalation triggers.",
-      "Any rapid decline or looks very ill presentation should trigger escalation."
-    ],
-    "turn_2": [
-      "Fever with confusion, severe weakness, or rapid breathing: escalate urgently.",
-      "Severe headache with neck stiffness or light sensitivity plus fever is a red flag.",
-      "High fever (above 39°C) with rigors or shaking chills warrants emergency evaluation.",
-      "Infants with fever, poor feeding, or unusual sleepiness need urgent evaluation.",
-      "Any rapid decline or looks very ill presentation should trigger escalation.",
-      "Severe infection signs with fainting, low blood pressure, or mottled skin are emergencies."
-    ],
-    "turn_3": [
-      "Fever with confusion, severe weakness, or rapid breathing: escalate urgently.",
-      "Severe headache with neck stiffness or light sensitivity plus fever is a red flag.",
-      "Fever with a purple or rapidly spreading rash should be escalated immediately.",
-      "High fever (above 39°C) with rigors or shaking chills warrants emergency evaluation.",
-      "Infants with fever, poor feeding, or unusual sleepiness need urgent evaluation.",
-      "Any rapid decline or looks very ill presentation should trigger escalation.",
-      "Non-blanching rash in a febrile child: suspect meningococcal disease, call emergency services immediately."
+      "Any fever ≥38°C in an infant under 3 months old requires emergency evaluation regardless of how well the baby appears.",
+      "Floppiness, feed refusal, and seizure-like episodes in a young infant = presume sepsis/meningitis until proven otherwise.",
+      "Skin turgor loss (skin tenting) in a dehydrated child is a late sign — indicates significant fluid deficit requiring IV resuscitation.",
+      "Post head injury: decreasing consciousness, unequal pupils, or inability to stay awake = neurosurgical emergency, call ambulance immediately.",
+      "Non-blanching rash in a febrile child: suspect meningococcal disease — call emergency services immediately.",
+      "A child who cannot keep any fluids down and has not passed urine for over 8 hours needs emergency IV rehydration.",
+      "Family reassurance ('all babies get fevers') must not override clinical red flags — escalation decisions are based on clinical signs, not social pressure."
     ]
   },
   "pregnancy": {
     "turn_1": [
-      "Light spotting in early pregnancy is common but should be evaluated.",
-      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
-      "No fetal movement after prior normal activity should be escalated."
+      "Headache with swelling in the third trimester could indicate pre-eclampsia — do not wait for routine appointment, seek same-day assessment.",
+      "Light spotting in early pregnancy is common but should be evaluated if worsening.",
+      "Possible rupture of membranes (fluid leak) at any gestation needs prompt assessment to confirm and plan management.",
+      "Postpartum fever with increasing bleeding and pain may indicate endometritis or retained products — needs assessment."
     ],
     "turn_2": [
-      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
-      "Heavy bleeding in the 2nd or 3rd trimester is an emergency.",
-      "Severe headache or vision changes in pregnancy are red-flag triggers.",
-      "Chest pain, shortness of breath, or fainting in pregnancy is emergent.",
-      "Right upper abdominal pain or sudden swelling of face/hands needs urgent evaluation."
+      "Severe headache unresponsive to paracetamol plus visual disturbances in pregnancy = pre-eclampsia until proven otherwise. Emergency now.",
+      "Heavy bleeding with one-sided pain in early pregnancy = ectopic concern. Emergency now.",
+      "Ongoing fluid leak plus regular contractions = likely premature labour with ruptured membranes. Emergency now.",
+      "Postpartum: soaking a pad per hour plus passing clots plus fever/rigors = postpartum haemorrhage with possible sepsis. Emergency now.",
+      "Facial oedema (new onset) in the third trimester is a pre-eclampsia warning sign distinct from normal ankle swelling."
     ],
     "turn_3": [
-      "Early pregnancy bleeding with one-sided pain is an emergency (ectopic concern).",
-      "Heavy bleeding in the 2nd or 3rd trimester is an emergency.",
-      "Lightheadedness, dizziness, or fainting with bleeding suggests hemodynamic compromise: emergency now.",
-      "Severe headache or vision changes in pregnancy are red-flag triggers.",
-      "Chest pain, shortness of breath, or fainting in pregnancy is emergent.",
-      "Right upper abdominal pain or sudden swelling of face/hands needs urgent evaluation."
+      "Right upper quadrant pain plus reduced urine output plus visual disturbances in pregnancy = HELLP syndrome. Maternal and fetal emergency.",
+      "Lightheadedness plus dizziness with vaginal bleeding suggests haemodynamic compromise — call ambulance.",
+      "Green or meconium-stained amniotic fluid indicates possible fetal distress — needs continuous monitoring and likely expedited delivery.",
+      "Near-syncope plus tachycardia plus rapid blood loss postpartum = hypovolaemic shock risk. Call ambulance immediately.",
+      "Contractions every 5 minutes with ruptured membranes at preterm gestation requires emergency assessment for delivery planning.",
+      "Postpartum haemorrhage with haemodynamic instability may require surgical intervention (examination under anaesthesia, balloon tamponade)."
     ]
   },
   "suicide": {
     "turn_1": [
-      "Persistent hopelessness, worthlessness, or inability to see the future improving needs prompt evaluation.",
-      "Current intent, plan, or access to means: immediate escalation.",
-      "If safety cannot be ensured or they refuse safety steps, escalate now."
+      "Non-suicidal self-injury (NSSI) in adolescents is a significant risk factor for future suicide attempts, even without current suicidal intent.",
+      "Persistent hopelessness, worthlessness, or inability to see the future improving needs prompt mental health evaluation.",
+      "Complicated grief with functional impairment (not eating, not working, social withdrawal) warrants urgent assessment.",
+      "When a patient denies suicidal ideation, explore further — denial does not eliminate risk, especially with other warning signs."
     ],
     "turn_2": [
-      "Current intent, plan, or access to means: immediate escalation.",
-      "Recent attempt or self-harm with ongoing risk warrants urgent intervention.",
-      "Sudden goodbyes, giving away items, or hopeless statements are escalation triggers.",
-      "If safety cannot be ensured or they refuse safety steps, escalate now.",
-      "Active suicidal thoughts with fear of acting on them require emergency assessment."
+      "Current intent, plan, or access to means: immediate escalation to emergency.",
+      "An aborted attempt (e.g., holding pills then putting them back) indicates the person has crossed the threshold from ideation to action — treat as high risk.",
+      "Giving away possessions, writing letters to loved ones, cancelling financial plans = preparatory behaviours for suicide. Emergency escalation.",
+      "Progression from non-suicidal self-harm to contemplating lethal methods shows escalating risk trajectory.",
+      "If safety cannot be ensured or the patient refuses safety steps, escalate now."
     ],
     "turn_3": [
-      "Current intent, plan, or access to means: immediate escalation.",
-      "Overdose or tablet ingestion with suicidal intent is an emergency now.",
-      "Recent attempt or self-harm with ongoing risk warrants urgent intervention.",
-      "Intoxication plus suicidal thoughts should be treated as high risk.",
-      "Sudden goodbyes, giving away items, or hopeless statements are escalation triggers.",
-      "If safety cannot be ensured or they refuse safety steps, escalate now.",
-      "Researching methods plus access to means plus isolation: highest risk, emergency now."
+      "Current intent, plan, or access to means: immediate escalation to emergency.",
+      "Suicidal ideation plus research into methods plus access to means plus isolation = highest risk category. Emergency now.",
+      "Patient minimisation ('I'll be fine', 'you're reading too much into it') after demonstrating preparatory behaviours INCREASES rather than decreases risk.",
+      "Adolescent confidentiality must yield to safety when there is risk of serious harm — duty of care overrides.",
+      "Sudden goodbyes, giving away items, or hopeless statements are escalation triggers even when patient denies intent.",
+      "A request to 'just find me a counsellor' when clinical risk indicators suggest emergency is not sufficient — emergency assessment is required."
     ]
   },
-  "meds": {
+  "psychiatry": {
     "turn_1": [
-      "Minor bleeding on warfarin (gum bleeding) may indicate elevated INR; check with doctor.",
-      "Double insulin dose or signs of low blood sugar: emergency or urgent now.",
-      "Trouble breathing, swelling, or hives after a medication is an emergency."
+      "Severe insomnia (no sleep for multiple days) combined with grandiosity and pressured activity suggests acute mania.",
+      "Lack of insight ('nothing is wrong with me') is a hallmark feature of mania and psychosis — the patient's self-assessment should not be taken at face value.",
+      "Family members reporting concern about behaviour changes should be taken seriously, especially when the patient dismisses their concerns."
     ],
     "turn_2": [
-      "Warfarin with dark urine or spontaneous bruising suggests significant over-anticoagulation: emergency.",
-      "Warfarin with vomiting blood is an emergency now.",
-      "Paracetamol overdose (many tablets in a short time): emergency or poison help now.",
-      "New confusion, extreme drowsiness, or seizures after meds should be escalated.",
-      "Multiple signs of bleeding on anticoagulants: emergency evaluation immediately."
+      "Reckless spending, quitting employment, and relationship breakdown during suspected mania indicate severe functional harm requiring emergency assessment.",
+      "Complete lack of insight combined with harmful decision-making in mania may warrant consideration of involuntary assessment.",
+      "Escalating manic symptoms without sleep for 4+ days carry risk of psychotic features and dangerous behaviour.",
+      "A manic patient saying 'I'm not ill' or 'I'm finally seeing clearly' is exhibiting anosognosia — do not validate this self-assessment."
     ],
     "turn_3": [
-      "Warfarin with vomiting blood is an emergency now.",
-      "Dizziness, fast heart rate, or fainting with bleeding signs suggests internal hemorrhage: emergency now.",
-      "Black or tarry stool (melena) indicates gastrointestinal bleeding: emergency on anticoagulants.",
-      "Multiple signs of bleeding on anticoagulants: emergency evaluation immediately.",
-      "New confusion, extreme drowsiness, or seizures after meds should be escalated.",
-      "Child or vulnerable adult may have swallowed meds accidentally: escalate now."
+      "Police involvement due to disturbed behaviour in suspected mania = psychiatric emergency requiring immediate assessment.",
+      "A manic patient asking you to 'tell them I'm fine' is seeking validation — providing it could prevent them from receiving needed care.",
+      "Ongoing severe insomnia (4+ days) with escalating disturbed behaviour carries risk of psychotic mania, collapse, and dangerous actions.",
+      "In acute mania with police involvement and no insight, emergency psychiatric assessment under mental health legislation should be considered.",
+      "Do not reassure a manic patient that they are well — this undermines emergency intervention and may put them at further risk."
     ]
   }
 }

@@ -22,7 +22,7 @@ Methodology details: see `METHODOLOGY.md`.
 - [x] Phase 3 synthesis report with scaling strategy recommendations
 - [x] GPT-5.2 adversarial data reconstruction: model_outputs.jsonl rebuilt, constrained escalation extraction bug fixed, analysis artifacts regenerated
 - [x] Rubric refinement: tightened all 5 scoring dimensions based on 198-output LLM-judge disagreement analysis — actionability κ improved +0.177 (Fair→Moderate), hard fail κ improved +0.225 (Slight→Fair), safety κ improved +0.036; GPT-4.1-mini adversarial hard_fail κ reached 0.765 (Substantial)
-- [x] Multi-turn evaluation framework: 8 cases (3 turns each) across 6 buckets, turn-specific evidence packs, conversation-history prompting, 3 trajectory detectors (escalation flip-flop, delayed escalation, final mismatch), 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run
+- [x] Multi-turn evaluation framework: 9 specialist-aligned cases (3 turns each) across 3 clinical domains — paediatrics/neonatology (3 cases), obstetrics/gynaecology (3 cases), psychiatry (3 cases). Each case embeds `specialist_domain` and `specialist_validation_note` for future specialist validation. Turn-specific evidence packs, conversation-history prompting, 3 trajectory detectors (escalation flip-flop, delayed escalation, final mismatch), 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run (54 records per model)
 
 ---
 
@@ -61,29 +61,24 @@ These are high-value because real patients don’t present like clean exam quest
 
 ---
 
-## 3) Multi-turn cases
+## 3) Multi-turn cases ✅ BUILT
 
-**What it means:** Instead of a single prompt, the case unfolds across multiple turns, where crucial information may appear late, or the patient’s answers change the risk.
+9 specialist-aligned multi-turn cases are built and verified across 3 clinical domains (paediatrics/neonatology, obstetrics/gynaecology, psychiatry). Each case has 3 turns where risk escalates as new symptoms emerge. Cases are purpose-built for specialist validation — each embeds a `specialist_validation_note` identifying the clinical decision point where domain expert input is most valuable.
 
-This tests whether the model:
-- updates triage appropriately as new info arrives,
-- asks the right questions when needed (without delaying emergencies),
-- and avoids “locking in” too early.
-
-Multi-turn cases are closer to actual clinical interaction and expose a lot of brittle behavior that single-turn cases miss.
+Ready to run: `DRY_RUN=0 python -m src.run_multiturn_eval`
 
 ---
 
 ## 4) Specialist-labeled gold
 
-**What it means:** Instead of you alone deciding the “gold” escalation, you get clinicians (ED/ICU, cardiology, O&G, psych, paeds, etc.) to label what the correct escalation should be — and ideally provide brief rationale.
+**What it means:** Domain experts independently review and label cases, producing clinician-validated gold labels, inter-rater reliability between author and specialist, and rubric ambiguity identification.
 
-This gives the project credibility fast because it reduces “one-person subjective gold” and moves toward something defensible:
-- “Here is how multiple clinicians would triage this.”
-- “Here’s where they agree/disagree.”
-- “Here’s the rubric we used.”
+**Specialist contacts available:** paediatrics/neonatology consultant, obstetrics/gynaecology consultant, psychiatry consultant.
 
-Even 10–20 specialist-labeled cases can massively upgrade the seriousness of the work.
+**Research design (detailed in METHODOLOGY.md):**
+- Multi-turn cases are purpose-built per specialist domain (MT01–MT03 → paeds, MT04–MT06 → O&G, MT07–MT09 → psychiatry)
+- Each specialist also back-validates existing single-turn and adversarial cases in their domain, retroactively strengthening all prior results
+- Planned analysis: Cohen's kappa per domain, confusion matrix of disagreements, rubric refinement iteration, comparison of human–specialist vs human–LLM-judge agreement
 
 ---
 
@@ -143,12 +138,12 @@ These checks let you scale: you can run 500 cases and quickly surface the danger
 
 ## Suggested order of attack
 
-Multi-turn framework is built and verified. Next steps:
+Multi-turn framework is built, specialist-aligned, and verified. Next steps:
 
-1) **Run multi-turn eval live** — set `DRY_RUN=0` and run on GPT-5.2 and GPT-4.1-mini, then manually score the 48 outputs per model and run auto-detection + LLM judge
+1) **Run multi-turn eval live** — set `DRY_RUN=0` and run on GPT-5.2 and GPT-4.1-mini, then manually score the 54 outputs per model and run auto-detection + LLM judge
 2) **Patch work on known failures** — use adversarial + multi-turn failure cases to design targeted prompt patches, re-run and measure before/after
-3) **Specialist-labeled gold** — get 1–2 clinicians to independently label 10–15 cases (this also validates rubric from a clinical perspective)
+3) **Specialist validation** — send scoring packets to paeds, O&G, and psychiatry consultants. Each reviews their 3 multi-turn cases + back-validates relevant single-turn and adversarial cases. Measure Cohen's kappa author-vs-specialist per domain
 4) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
-5) **Inter-rater reliability** — the LLM-as-judge data already provides a baseline (κ=0.2–0.5); add a second human rater for stronger validation
+5) **Inter-rater reliability** — specialist validation provides clinical IRR; combined with LLM-judge data (κ=0.2–0.5), gives a multi-method reliability story
 
 That sequence turns this from "rigorous evaluation project" into "production-grade evaluation methodology."
