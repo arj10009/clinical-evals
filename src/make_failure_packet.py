@@ -1,16 +1,22 @@
 from __future__ import annotations
 
+"""Generate markdown failure packet for sepsis HIGH-risk adversarial cases.
+
+Usage:
+    python -m src.make_failure_packet --model gpt5_2
+    python -m src.make_failure_packet --model gpt4_1_mini
+"""
+
+import argparse
 import csv
 import json
 from pathlib import Path
 
+
 CASES_CSV = Path("data/adversarial_cases.csv")
 EVIDENCE_JSON = Path("data/evidence_packs.json")
-SCORES_CSV = Path("runs/adversarial/gpt5_2/scored_results.csv")
-OUTPUTS_JSONL = Path("runs/adversarial/gpt5_2/model_outputs.jsonl")
-OUT_MD = Path("runs/adversarial/gpt5_2/analysis/failure_packet_sepsis_high_risk.md")
+TARGET_CASES = {"A17", "A18", "A19", "A20"}
 
-TARGET_CASES = {"A17","A18","A19","A20"}
 
 def load_cases() -> dict[str, dict]:
     out = {}
@@ -20,22 +26,24 @@ def load_cases() -> dict[str, dict]:
             out[row["id"].strip()] = row
     return out
 
+
 def load_evidence() -> dict[str, list[str]]:
     with EVIDENCE_JSON.open("r", encoding="utf-8") as f:
         return json.load(f)
 
-def load_scores() -> dict[tuple[str,str], dict]:
-    # keyed by (case_id, condition)
+
+def load_scores(path: Path) -> dict[tuple[str, str], dict]:
     out = {}
-    with SCORES_CSV.open("r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8") as f:
         r = csv.DictReader(f)
         for row in r:
             out[(row["case_id"].strip(), row["condition"].strip())] = row
     return out
 
-def load_outputs() -> dict[tuple[str,str], dict]:
+
+def load_outputs(path: Path) -> dict[tuple[str, str], dict]:
     out = {}
-    with OUTPUTS_JSONL.open("r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8") as f:
         for line in f:
             if not line.strip():
                 continue
@@ -44,19 +52,28 @@ def load_outputs() -> dict[tuple[str,str], dict]:
             out[key] = rec
     return out
 
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Generate sepsis failure packet")
+    parser.add_argument("--model", required=True, help="Model tag, e.g. gpt5_2 or gpt4_1_mini")
+    args = parser.parse_args()
+
+    scores_csv = Path(f"runs/adversarial/{args.model}/scored_results.csv")
+    outputs_jsonl = Path(f"runs/adversarial/{args.model}/model_outputs.jsonl")
+    out_md = Path(f"runs/adversarial/{args.model}/analysis/failure_packet_sepsis_high_risk.md")
+
     cases = load_cases()
     evidence = load_evidence()
-    scores = load_scores()
-    outputs = load_outputs()
+    scores = load_scores(scores_csv)
+    outputs = load_outputs(outputs_jsonl)
 
-    OUT_MD.parent.mkdir(parents=True, exist_ok=True)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
 
     lines = []
-    lines.append("# Sepsis high-risk rule failures (A17–A20)\n")
+    lines.append(f"# Sepsis high-risk rule failures (A17–A20) — {args.model}\n")
     lines.append("These are the four adversarial sepsis cases where the constrained run did NOT escalate to emergency_now.\n")
 
-    for cid in ["A17","A18","A19","A20"]:
+    for cid in ["A17", "A18", "A19", "A20"]:
         c = cases[cid]
         bucket = c["bucket"]
         risk = c["risk"]
@@ -64,16 +81,21 @@ def main() -> None:
         variant = c["variant_type"]
         question = c["question"]
 
-        cons_out = outputs.get((cid,"constrained"), {}).get("model_response_text","")
-        base_out = outputs.get((cid,"baseline"), {}).get("model_response_text","")
+        cons_out = outputs.get((cid, "constrained"), {}).get("model_response_text", "")
+        base_out = outputs.get((cid, "baseline"), {}).get("model_response_text", "")
 
-        cons_score = scores.get((cid,"constrained"), {})
-        # contract checks as recorded
+        cons_score = scores.get((cid, "constrained"), {})
         contract = {
-            "Format OK": cons_score.get("Format OK",""),
-            "High risk ==> emergency_now (if applicable)": cons_score.get("High risk ==> emergency_now (if applicable)",""),
-            "Exact emergency phrase present when emergency_now": cons_score.get("Exact emergency phrase present when emergency_now",""),
-            "No dosing / no extra info beyond bullets": cons_score.get("No dosing / no extra info beyond bullets",""),
+            "Format OK": cons_score.get("Format OK", ""),
+            "High risk ==> emergency_now (if applicable)": cons_score.get(
+                "High risk ==> emergency_now (if applicable)", ""
+            ),
+            "Exact emergency phrase present when emergency_now": cons_score.get(
+                "Exact emergency phrase present when emergency_now", ""
+            ),
+            "No dosing / no extra info beyond bullets": cons_score.get(
+                "No dosing / no extra info beyond bullets", ""
+            ),
         }
 
         lines.append("\n---\n")
@@ -98,12 +120,13 @@ def main() -> None:
         lines.append("```\n")
 
         lines.append("### Contract checks you recorded\n")
-        for k,v in contract.items():
+        for k, v in contract.items():
             lines.append(f"- {k}: {v}")
         lines.append("")
 
-    OUT_MD.write_text("\n".join(lines), encoding="utf-8")
-    print("Wrote:", OUT_MD)
+    out_md.write_text("\n".join(lines), encoding="utf-8")
+    print("Wrote:", out_md)
+
 
 if __name__ == "__main__":
     main()

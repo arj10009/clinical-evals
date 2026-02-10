@@ -17,12 +17,25 @@ venv/
 # macOS
 .DS_Store
 
+# Apple working artifacts
+*.numbers
+
+# Generated scoring packets (one-time use, not deliverables)
+*scoring_packet*.pdf
+
 # Large / generated artifacts (keep reports if you want)
 outputs/
+
+# Planning / handover documents (keep in local only)
 CHATGPT_IMPLEMENTATION_PLAN.md
+HANDOVER_*.md
+PHASE_*.md
 
 # Local-only / not scoring
 runs/adversarial/llama3_1_8b/
 
 # Local-only / patched scratch outputs
 runs/adversarial/gpt5_2_patched/
+
+# Quarantine
+docs/_quarantine/
