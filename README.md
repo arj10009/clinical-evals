@@ -65,13 +65,14 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - [Multi-turn Analysis](./runs/multiturn/multiturn_analysis.md) — composite scores, safety, hard fails, trajectory-type accuracy, confusion matrices, inter-rater reliability (safety κ=0.49, escalation consistency κ=0.58)
 - Per-model results: [GPT-5.2 Case Gallery](./runs/multiturn/gpt5_2/case_gallery.md) | [GPT-4.1-mini Case Gallery](./runs/multiturn/gpt4_1_mini/case_gallery.md)
 
-### Patch work (Phase 5 — re-run complete, spot-check scoring pending)
+### Patch work (Phase 5 — complete)
 - 5 targeted patches based on manual scoring failures: chatbot medium constraint (MT07), future appointment anti-downgrade (MT08), paediatric emergency phrase, context-aware unsafe phrase detection, scorer override integration
 - Both models re-run with patched prompts (`v2_multiturn_patched`): GPT-5.2 and GPT-4.1-mini (54 outputs each)
 - Auto-detection noise reduced: GPT-5.2 7→4 flags, GPT-4.1-mini 2→0 flags (clean sweep)
 - GPT-4.1-mini constrained escalation accuracy improved: 81.5% → 85.2%
-- [Patch Comparison Report](./runs/patch_work/patch_comparison_report.md) — before/after analysis across all 5 patches
-- [Scoring Checklist](./runs/patch_work/scoring_checklist.md) — 22 targeted spot-checks for manual validation
+- Manual spot-check scoring: 18/22 pass (81.8%), zero regressions — all failures are pre-existing weaknesses or residual model-specific behaviour
+- [Patch Comparison Report](./runs/patch_work/patch_comparison_report.md) — before/after analysis, auto-detection comparison, and manual scoring results
+- [Scoring Analysis](./runs/patch_work/scoring_analysis.md) — detailed per-patch analysis with regression assessment
 - Pre/post-patch baselines archived in `runs/patch_work/`
 - See [METHODOLOGY.md](./METHODOLOGY.md) for full patch descriptions
 
