@@ -142,6 +142,8 @@ def main() -> None:
                             risk=risk,
                             turn_num=turn_num,
                             prior_escalation=prior_escalation["constrained"],
+                            bucket=bucket,
+                            speaker=turn_data.get("speaker", ""),
                         )
 
                     if dry_run:
@@ -189,7 +191,7 @@ def main() -> None:
                         "gold_escalation_at_turn": gold_at_turn,
                         "gold_final_escalation": gold_final,
                         "condition": condition,
-                        "prompt_version": "v1_multiturn",
+                        "prompt_version": "v2_multiturn_patched",
                         "model_response_text": model_response_text,
                         "model_escalation_extracted": model_esc,
                         "prior_escalation": prior_escalation.get(condition),

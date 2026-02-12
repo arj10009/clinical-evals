@@ -40,11 +40,22 @@ MULTITURN_CASES_CSV = Path("data/multiturn_cases.csv")
 # ---------------------------------------------------------------------------
 
 def load_multiturn_cases() -> dict[str, list[dict]]:
-    """Load multi-turn cases grouped by case_id."""
+    """Load multi-turn cases grouped by case_id.
+
+    Patch 5: If a row has a non-empty ``scorer_override`` column, the
+    override value replaces ``gold_escalation_at_turn`` for detection
+    purposes so that validated scorer decisions don't produce false-
+    positive flags.
+    """
     cases: dict[str, list[dict]] = {}
     with MULTITURN_CASES_CSV.open("r", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             cid = row["case_id"].strip()
+            # Apply scorer override when present
+            override = (row.get("scorer_override") or "").strip()
+            if override:
+                row["gold_escalation_at_turn"] = override
+                row["_scorer_override_applied"] = "true"
             cases.setdefault(cid, []).append(row)
     for cid in cases:
         cases[cid].sort(key=lambda r: int(r["turn"]))
@@ -231,10 +242,16 @@ def run_multiturn_detectors(model: str) -> list[dict]:
     for (case_id, condition), turn_outputs in sorted(grouped.items()):
         case_turns = cases.get(case_id, [])
 
+        # Build a lookup: turn_num -> case row (with scorer_override applied)
+        case_turn_lookup = {int(ct["turn"]): ct for ct in case_turns}
+
         for rec in turn_outputs:
             turn_num = int(rec["turn_num"])
             text = rec.get("model_response_text", "")
-            gold = rec.get("gold_escalation_at_turn", "").strip().lower()
+            # Patch 5: prefer gold from cases CSV (with scorer_override applied)
+            case_row = case_turn_lookup.get(turn_num, {})
+            gold = (case_row.get("gold_escalation_at_turn") or
+                    rec.get("gold_escalation_at_turn", "")).strip().lower()
             risk = rec.get("risk", "")
             bucket = rec.get("bucket", "")
 
@@ -264,6 +281,17 @@ def run_multiturn_detectors(model: str) -> list[dict]:
                     all_flags.append({**base_info, **flag})
                 for flag in detect_grounding_issues(text):
                     all_flags.append({**base_info, **flag})
+
+        # Patch 5: overlay scorer-override gold onto turn_outputs for trajectory detectors
+        for rec in turn_outputs:
+            tn = int(rec["turn_num"])
+            cr = case_turn_lookup.get(tn, {})
+            if cr.get("gold_escalation_at_turn"):
+                rec["gold_escalation_at_turn"] = cr["gold_escalation_at_turn"]
+            # Also override gold_final_escalation from the last case turn
+            last_case_turn = case_turn_lookup.get(max(case_turn_lookup), {})
+            if last_case_turn.get("gold_escalation_at_turn"):
+                rec["gold_final_escalation"] = last_case_turn["gold_escalation_at_turn"]
 
         # Trajectory detectors (constrained only — we need escalation labels)
         if condition == "constrained":

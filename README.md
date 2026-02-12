@@ -38,10 +38,10 @@ GPT-4.1-mini constrained outperforms GPT-5.2 baseline by +29.2% accuracy and −
 
 ## Start here (results)
 
-### Per-model results
-- **Llama 3.1 8B:** [Final Report](./runs/llama3_1_8b/final_report.md) | [Case Gallery](./runs/llama3_1_8b/scored_case_gallery.md) | [Summary](./runs/llama3_1_8b/scored_summary.md)
-- **GPT-4.1-mini:** [Final Report](./runs/gpt4_1_mini/final_report.md) | [Case Gallery](./runs/gpt4_1_mini/scored_case_gallery.md) | [Summary](./runs/gpt4_1_mini/scored_summary.md)
-- **GPT-5.2:** [Final Report](./runs/gpt5_2/final_report.md) | [Case Gallery](./runs/gpt5_2/scored_case_gallery.md) | [Summary](./runs/gpt5_2/scored_summary.md)
+### Per-model results (single-turn)
+- **Llama 3.1 8B:** [Final Report](./runs/singleturn/llama3_1_8b/final_report.md) | [Case Gallery](./runs/singleturn/llama3_1_8b/scored_case_gallery.md) | [Summary](./runs/singleturn/llama3_1_8b/scored_summary.md)
+- **GPT-4.1-mini:** [Final Report](./runs/singleturn/gpt4_1_mini/final_report.md) | [Case Gallery](./runs/singleturn/gpt4_1_mini/scored_case_gallery.md) | [Summary](./runs/singleturn/gpt4_1_mini/scored_summary.md)
+- **GPT-5.2:** [Final Report](./runs/singleturn/gpt5_2/final_report.md) | [Case Gallery](./runs/singleturn/gpt5_2/scored_case_gallery.md) | [Summary](./runs/singleturn/gpt5_2/scored_summary.md)
 
 Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_results.csv` (manually scored).
 
@@ -55,17 +55,25 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 
 ### Automated detection, rubric validation & refinement (Phase 3)
 - [Phase 3 Synthesis Report](./runs/phase3_synthesis_report.md) — rule-based detectors + LLM-as-judge inter-rater reliability + rubric refinement based on disagreement analysis
-- Per-model auto-detection: [GPT-5.2](./runs/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md) | [GPT-5.2 adversarial](./runs/adversarial/gpt5_2/auto_flags_summary.md)
-- Per-model LLM judge agreement: [GPT-5.2](./runs/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/llama3_1_8b/llm_judge_agreement.md)
+- Per-model auto-detection: [GPT-5.2](./runs/singleturn/gpt5_2/auto_flags_summary.md) | [GPT-4.1-mini](./runs/singleturn/gpt4_1_mini/auto_flags_summary.md) | [Llama 3.1:8b](./runs/singleturn/llama3_1_8b/auto_flags_summary.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/auto_flags_summary.md) | [GPT-5.2 adversarial](./runs/adversarial/gpt5_2/auto_flags_summary.md)
+- Per-model LLM judge agreement: [GPT-5.2](./runs/singleturn/gpt5_2/llm_judge_agreement.md) | [GPT-4.1-mini](./runs/singleturn/gpt4_1_mini/llm_judge_agreement.md) | [GPT-4.1-mini adversarial](./runs/adversarial/gpt4_1_mini/llm_judge_agreement.md) | [Llama 3.1:8b](./runs/singleturn/llama3_1_8b/llm_judge_agreement.md)
 
-### Multi-turn evaluation (Phase 4 — ready to run)
+### Multi-turn evaluation (Phase 4 — scored and analysed)
 - 9 specialist-aligned multi-turn cases across 3 trajectory types: escalate-to-emergency (3), stay-in-urgent/routine (3), non-monotonic with de-escalation (3)
 - 3 turns each (27 turns total, 54 outputs per model) — gold label distribution: emergency_now 30%, urgent_same_day 41%, routine_visit 26%, self_care 4%
 - Trajectory variability tests calibration, not just sensitivity: does the model catch emergencies AND resist over-escalation AND de-escalate appropriately after medical review?
-- Cases designed for specialist validation: each includes `specialist_domain` and `specialist_validation_note`
-- 3 trajectory detectors: escalation flip-flop, delayed escalation, final mismatch
-- 2 new scoring dimensions: context integration, escalation consistency
-- Run: `DRY_RUN=0 python -m src.run_multiturn_eval` → `python -m src.auto_detect_multiturn --model <tag>`
+- [Multi-turn Analysis](./runs/multiturn/multiturn_analysis.md) — composite scores, safety, hard fails, trajectory-type accuracy, confusion matrices, inter-rater reliability (safety κ=0.49, escalation consistency κ=0.58)
+- Per-model results: [GPT-5.2 Case Gallery](./runs/multiturn/gpt5_2/case_gallery.md) | [GPT-4.1-mini Case Gallery](./runs/multiturn/gpt4_1_mini/case_gallery.md)
+
+### Patch work (Phase 5 — re-run complete, spot-check scoring pending)
+- 5 targeted patches based on manual scoring failures: chatbot medium constraint (MT07), future appointment anti-downgrade (MT08), paediatric emergency phrase, context-aware unsafe phrase detection, scorer override integration
+- Both models re-run with patched prompts (`v2_multiturn_patched`): GPT-5.2 and GPT-4.1-mini (54 outputs each)
+- Auto-detection noise reduced: GPT-5.2 7→4 flags, GPT-4.1-mini 2→0 flags (clean sweep)
+- GPT-4.1-mini constrained escalation accuracy improved: 81.5% → 85.2%
+- [Patch Comparison Report](./runs/patch_work/patch_comparison_report.md) — before/after analysis across all 5 patches
+- [Scoring Checklist](./runs/patch_work/scoring_checklist.md) — 22 targeted spot-checks for manual validation
+- Pre/post-patch baselines archived in `runs/patch_work/`
+- See [METHODOLOGY.md](./METHODOLOGY.md) for full patch descriptions
 
 ### Methodology
 - [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, multi-turn design, specialist validation design, known limitations
@@ -76,9 +84,10 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 
 - `data/` — case sets (`cases.csv`, `adversarial_cases.csv`, `multiturn_cases.csv`), evidence bullets (`evidence_packs.json`, `evidence_packs_multiturn.json`)
 - `src/` — evaluation harness, adversarial runner, multi-turn runner, analysis scripts, auto-detection, LLM-as-judge, and reporting
-- `runs/<model>/` — per-model run artifacts (outputs, scores, reports, auto-flags, LLM judge scores)
+- `runs/singleturn/<model>/` — per-model single-turn run artifacts (outputs, scores, reports, auto-flags, LLM judge scores)
 - `runs/adversarial/<model>/` — adversarial variant results and analysis
 - `runs/multiturn/<model>/` — multi-turn evaluation results
+- `runs/patch_work/` — pre-patch baselines and post-patch comparison artifacts
 - `cross_model/` — cross-model comparison script and generated report
 
 ---
@@ -125,7 +134,7 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — multi-turn framework is built and specialist-aligned; next steps include running the multi-turn eval live, specialist validation with domain experts (paediatrics, O&G, psychiatry), and scaling the suite.
+See [WHAT_NOW.md](./WHAT_NOW.md) — multi-turn evaluation scored and analysed, patch work implemented; next steps are re-running with patched prompts, specialist validation with domain experts (paediatrics, O&G, psychiatry), and scaling the suite.
 
 ## Ethics and Limitations
 

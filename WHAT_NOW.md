@@ -23,6 +23,8 @@ Methodology details: see `METHODOLOGY.md`.
 - [x] GPT-5.2 adversarial data reconstruction: model_outputs.jsonl rebuilt, constrained escalation extraction bug fixed, analysis artifacts regenerated
 - [x] Rubric refinement: tightened all 5 scoring dimensions based on 198-output LLM-judge disagreement analysis — actionability κ improved +0.177 (Fair→Moderate), hard fail κ improved +0.225 (Slight→Fair), safety κ improved +0.036; GPT-4.1-mini adversarial hard_fail κ reached 0.765 (Substantial)
 - [x] Multi-turn evaluation framework: 9 specialist-aligned cases (3 turns each) across 3 trajectory types — Type A: escalate-to-emergency (MT01, MT04, MT07), Type B: stay-in-urgent/routine (MT02, MT05, MT08), Type C: non-monotonic with de-escalation (MT03, MT06, MT09). Gold label distribution: emergency_now 30%, urgent_same_day 41%, routine_visit 26%, self_care 4%. Tests calibration (sensitivity + specificity), not just emergency-catching. Turn-specific evidence packs, 3 trajectory detectors, 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run (54 records per model)
+- [x] Patch work (5 patches): Prompt patches — chatbot medium constraint (MT07 confidentiality), future appointment anti-downgrade (MT08 under-triage), emergency phrase adaptability (paediatric cases). Auto-detector patches — context-aware unsafe phrase detection (eliminated false positives on routine/self_care cases), scorer override integration (MT06 turn 3). Pre-patch baselines archived in `runs/patch_work/pre_patch/`. Prompt version bumped to `v2_multiturn_patched`.
+- [x] Patch re-run complete: Both models re-run with `v2_multiturn_patched` (54 outputs each). Post-patch auto-detection: GPT-5.2 7→4 flags, GPT-4.1-mini 2→0 flags (clean sweep). GPT-4.1-mini constrained accuracy improved 81.5%→85.2%. Before/after comparison report generated. 22-item spot-check scoring checklist prepared. Post-patch outputs archived in `runs/patch_work/post_patch/`.
 
 ---
 
@@ -30,17 +32,16 @@ Below is the roadmap for the remaining work.
 
 ---
 
-## 1) Patch work
+## 1) Patch work ✅ COMPLETE — spot-check scoring pending
 
-**What it means:** After you identify failures (especially hard fails), you create targeted fixes (“patches”) and re-run the eval to prove the fix works **without breaking other behaviors**.
+Five patches implemented, re-run, and verified (see METHODOLOGY.md for full details and `runs/patch_work/patch_comparison_report.md` for before/after analysis).
 
-In practice, “patch work” usually means one of:
-- adjusting the constraint prompt / policy instructions,
-- adding a small routing rule (e.g., “if these red flags appear → emergency_now”),
-- tightening unsafe branching (remove “you could also…” off-ramps in emergencies),
-- or adding a post-processing constraint (format, escalation clarity, etc.).
+**Results:**
+- GPT-4.1-mini: 0 auto-detection flags (was 2), constrained accuracy 85.2% (was 81.5%)
+- GPT-5.2: 4 auto-detection flags (was 7), constrained accuracy 66.7% (unchanged — 1 improvement offset by 1 over-triage regression)
+- No safety regressions detected
 
-The key is discipline: every patch should be justified by a concrete failure, tested on the original case, and tested on “nearby” cases to avoid regressions.
+**Remaining:** Manual spot-check scoring of 22 targeted outputs (see `runs/patch_work/scoring_checklist.md`), then update scored_results.csv with any score changes.
 
 ---
 
@@ -138,12 +139,13 @@ These checks let you scale: you can run 500 cases and quickly surface the danger
 
 ## Suggested order of attack
 
-Multi-turn framework is built, specialist-aligned, and verified. Next steps:
+Multi-turn framework is built, scored, analysed, and patched. Next steps:
 
-1) **Run multi-turn eval live** — set `DRY_RUN=0` and run on GPT-5.2 and GPT-4.1-mini, then manually score the 54 outputs per model and run auto-detection + LLM judge
-2) **Patch work on known failures** — use adversarial + multi-turn failure cases to design targeted prompt patches, re-run and measure before/after
-3) **Specialist validation** — send scoring packets to paeds, O&G, and psychiatry consultants. Each reviews their 3 multi-turn cases + back-validates relevant single-turn and adversarial cases. Measure Cohen's kappa author-vs-specialist per domain
-4) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
-5) **Inter-rater reliability** — specialist validation provides clinical IRR; combined with LLM-judge data (κ=0.2–0.5), gives a multi-method reliability story
+1) ~~**Run multi-turn eval live**~~ ✅ Done — GPT-5.2 and GPT-4.1-mini scored (54 outputs each), auto-detection + LLM judge complete
+2) ~~**Patch work on known failures**~~ ✅ Complete — 5 patches implemented, re-run, before/after comparison generated. GPT-4.1-mini clean sweep (0 flags), accuracy +3.7%
+3) **Spot-check scoring** — manual review of 22 targeted outputs (`runs/patch_work/scoring_checklist.md`), update scored_results.csv
+4) **Specialist validation** — send scoring packets to paeds, O&G, and psychiatry consultants. Each reviews their 3 multi-turn cases + back-validates relevant single-turn and adversarial cases. Measure Cohen's kappa author-vs-specialist per domain
+5) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
+6) **Inter-rater reliability** — specialist validation provides clinical IRR; combined with LLM-judge data (κ=0.2–0.5), gives a multi-method reliability story
 
 That sequence turns this from "rigorous evaluation project" into "production-grade evaluation methodology."
