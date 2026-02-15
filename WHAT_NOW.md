@@ -25,6 +25,7 @@ Methodology details: see `METHODOLOGY.md`.
 - [x] Multi-turn evaluation framework: 9 specialist-aligned cases (3 turns each) across 3 trajectory types — Type A: escalate-to-emergency (MT01, MT04, MT07), Type B: stay-in-urgent/routine (MT02, MT05, MT08), Type C: non-monotonic with de-escalation (MT03, MT06, MT09). Gold label distribution: emergency_now 30%, urgent_same_day 41%, routine_visit 26%, self_care 4%. Tests calibration (sensitivity + specificity), not just emergency-catching. Turn-specific evidence packs, 3 trajectory detectors, 2 new scoring dimensions (context integration, escalation consistency), multi-turn LLM judge — all verified in dry-run (54 records per model)
 - [x] Patch work (5 patches): Prompt patches — chatbot medium constraint (MT07 confidentiality), future appointment anti-downgrade (MT08 under-triage), emergency phrase adaptability (paediatric cases). Auto-detector patches — context-aware unsafe phrase detection (eliminated false positives on routine/self_care cases), scorer override integration (MT06 turn 3). Pre-patch baselines archived in `runs/patch_work/pre_patch/`. Prompt version bumped to `v2_multiturn_patched`.
 - [x] Patch re-run and scoring complete: Both models re-run with `v2_multiturn_patched` (54 outputs each). Post-patch auto-detection: GPT-5.2 7→4 flags, GPT-4.1-mini 2→0 flags (clean sweep). GPT-4.1-mini constrained accuracy improved 81.5%→85.2%. Manual spot-check scoring: 18/22 pass (81.8%), zero regressions — 2 failures are GPT-5.2 MT07 turn 3 residual confidentiality framing, 2 are pre-existing GPT-4.1-mini baseline vague-timeline weakness. Post-patch outputs and scoring results archived in `runs/patch_work/`.
+- [x] Specialist validation materials prepared: 3 specialty-specific PDF scoring packets created (paediatrics MT01–MT03, O&G MT04–MT06, psychiatry MT07–MT09). Each packet contains 3 multi-turn cases, 3 turns each (27 total validation points). Packets include case narratives, gold labels, evidence packs, domain-specific scoring rubric, and recording template. Analysis pipeline ready to process specialist response data.
 
 ---
 
@@ -73,16 +74,24 @@ Ready to run: `DRY_RUN=0 python -m src.run_multiturn_eval`
 
 ---
 
-## 4) Specialist-labeled gold
+## 4) Specialist validation ✅ MATERIALS READY
 
 **What it means:** Domain experts independently review and label cases, producing clinician-validated gold labels, inter-rater reliability between author and specialist, and rubric ambiguity identification.
 
-**Specialist contacts available:** paediatrics/neonatology consultant, obstetrics/gynaecology consultant, psychiatry consultant.
+**Materials prepared:**
+- 3 specialty-specific PDF scoring packets: paediatrics (MT01–MT03, 9 turns), obstetrics & gynaecology (MT04–MT06, 9 turns), psychiatry (MT07–MT09, 9 turns)
+- Each packet includes: multi-turn case narratives, gold labels with clinical rationale, evidence packs, domain-adapted scoring rubric, and in-person recording template
+- 27 total validation points (9 per specialty)
+
+**Next concrete steps:**
+1. Collect specialist responses in person using scoring template (both consultants and registrars welcome)
+2. Enter specialist scores into CSV alongside author scores
+3. Run analysis pipeline: Cohen's kappa per domain, confusion matrix per specialty, cross-level agreement analysis (consultant vs registrar), rubric refinement recommendations
 
 **Research design (detailed in METHODOLOGY.md):**
 - Multi-turn cases are purpose-built per specialist domain (MT01–MT03 → paeds, MT04–MT06 → O&G, MT07–MT09 → psychiatry)
 - Each specialist also back-validates existing single-turn and adversarial cases in their domain, retroactively strengthening all prior results
-- Planned analysis: Cohen's kappa per domain, confusion matrix of disagreements, rubric refinement iteration, comparison of human–specialist vs human–LLM-judge agreement
+- Analysis will compute: Cohen's kappa per domain, confusion matrix of disagreements, cross-level agreement (consultant vs registrar), rubric refinement iteration, comparison of human–specialist vs human–LLM-judge agreement
 
 ---
 
@@ -142,13 +151,14 @@ These checks let you scale: you can run 500 cases and quickly surface the danger
 
 ## Suggested order of attack
 
-Multi-turn framework is built, scored, analysed, and patched. Next steps:
+Multi-turn framework is built, scored, analysed, patched, and specialist validation materials prepared. Next steps:
 
 1) ~~**Run multi-turn eval live**~~ ✅ Done — GPT-5.2 and GPT-4.1-mini scored (54 outputs each), auto-detection + LLM judge complete
 2) ~~**Patch work on known failures**~~ ✅ Complete — 5 patches implemented, re-run, scored (18/22 pass, 0 regressions). GPT-4.1-mini clean sweep (0 flags), accuracy +3.7%
 3) ~~**Spot-check scoring**~~ ✅ Complete — 22 outputs manually reviewed, scoring analysis report generated
-4) **Specialist validation** — send scoring packets to paeds, O&G, and psychiatry consultants. Each reviews their 3 multi-turn cases + back-validates relevant single-turn and adversarial cases. Measure Cohen's kappa author-vs-specialist per domain
-5) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
-6) **Inter-rater reliability** — specialist validation provides clinical IRR; combined with LLM-judge data (κ=0.2–0.5), gives a multi-method reliability story
+4) **Specialist validation — data collection** ✅ Materials ready — PDFs prepared; next: collect responses in person from paeds, O&G, and psychiatry specialists (consultants and registrars). Each reviews their 3 multi-turn cases + back-validates relevant single-turn and adversarial cases. Enter scores into CSV.
+5) **Specialist validation — analysis** — Run Cohen's kappa author-vs-specialist per domain, confusion matrices, cross-level agreement (consultant vs registrar), rubric refinement, comparison with LLM-judge agreement
+6) **Bigger suite with stratified metrics** — expand beyond 30 cases using automated detectors + LLM-judge for first-pass scoring, human review only for flagged cases
+7) **Multi-method reliability story** — specialist validation provides clinical IRR; combined with LLM-judge data (κ=0.2–0.5) and cross-level agreement, gives production-grade reliability narrative
 
 That sequence turns this from "rigorous evaluation project" into "production-grade evaluation methodology."

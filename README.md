@@ -76,6 +76,13 @@ Each run folder also contains `model_outputs.jsonl` (raw responses) and `scored_
 - Pre/post-patch baselines archived in `runs/patch_work/`
 - See [METHODOLOGY.md](./METHODOLOGY.md) for full patch descriptions
 
+### Specialist validation (Phase 6 — materials prepared)
+- 3 specialty-specific PDF scoring packets prepared: paediatrics (MT01–MT03), obstetrics & gynaecology (MT04–MT06), psychiatry (MT07–MT09)
+- Each packet contains 3 multi-turn cases, 3 turns each = 9 validation points per specialty, 27 total validation points across all specialties
+- Each packet includes: case narratives, gold labels, evidence packs, scoring rubric adapted for domain context, and recording template for in-person specialist review
+- Analysis pipeline ready to execute once specialist response data is collected into CSV format
+- Both consultants and registrars can participate; cross-level agreement analysis built into pipeline
+
 ### Methodology
 - [METHODOLOGY.md](./METHODOLOGY.md) — full scoring rubric, case design, prompt construction, multi-turn design, specialist validation design, known limitations
 
@@ -135,7 +142,7 @@ python -m cross_model.generate_comparison
 
 ## Roadmap
 
-See [WHAT_NOW.md](./WHAT_NOW.md) — multi-turn evaluation scored and analysed, patch work implemented; next steps are re-running with patched prompts, specialist validation with domain experts (paediatrics, O&G, psychiatry), and scaling the suite.
+See [WHAT_NOW.md](./WHAT_NOW.md) — multi-turn evaluation scored and analysed, patch work implemented, specialist validation materials prepared; next steps are collecting specialist responses, entering data into CSV, and running the analysis pipeline.
 
 ## Ethics and Limitations
 
