@@ -32,8 +32,8 @@ def main() -> None:
     parser.add_argument("--model", required=True, help="Model tag, e.g. gpt5_2 or gpt4_1_mini")
     args = parser.parse_args()
 
-    scores_path = Path(f"runs/adversarial/{args.model}/scored_results.csv")
-    out_dir = Path(f"runs/adversarial/{args.model}/analysis")
+    scores_path = Path(f"02_adversarial_prompting/{args.model}/scored_results.csv")
+    out_dir = Path(f"02_adversarial_prompting/{args.model}/analysis")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(scores_path, dtype=str).fillna("")

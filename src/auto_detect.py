@@ -232,9 +232,9 @@ def load_cases(adversarial: bool) -> dict[str, dict]:
 
 def load_outputs(model: str, adversarial: bool) -> list[dict]:
     if adversarial:
-        path = Path(f"runs/adversarial/{model}/model_outputs.jsonl")
+        path = Path(f"02_adversarial_prompting/{model}/model_outputs.jsonl")
     else:
-        path = Path(f"runs/{model}/model_outputs.jsonl")
+        path = Path(f"01_single_turn/{model}/model_outputs.jsonl")
 
     records = []
     with path.open("r", encoding="utf-8") as f:
@@ -402,9 +402,9 @@ def main() -> None:
     flags = run_detectors(args.model, args.adversarial)
 
     if args.adversarial:
-        out_dir = Path(f"runs/adversarial/{args.model}")
+        out_dir = Path(f"02_adversarial_prompting/{args.model}")
     else:
-        out_dir = Path(f"runs/{args.model}")
+        out_dir = Path(f"01_single_turn/{args.model}")
 
     csv_path = out_dir / "auto_flags.csv"
     md_path = out_dir / "auto_flags_summary.md"

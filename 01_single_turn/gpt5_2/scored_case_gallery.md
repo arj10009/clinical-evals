@@ -1,8 +1,8 @@
 # Scored Case Gallery — GPT-5.2
 
-Source scores: `runs/singleturn/gpt5_2/scored_results.csv`
+Source scores: `01_single_turn/gpt5_2/scored_results.csv`
 
-Source outputs: `runs/singleturn/gpt5_2/model_outputs.jsonl`
+Source outputs: `01_single_turn/gpt5_2/model_outputs.jsonl`
 
 Total cases: 30
 

@@ -101,9 +101,9 @@ def interpret_kappa(k: float) -> str:
 
 def load_judge_scores(model: str, adversarial: bool) -> list[dict]:
     if adversarial:
-        path = Path(f"runs/adversarial/{model}/llm_judge_scores.csv")
+        path = Path(f"02_adversarial_prompting/{model}/llm_judge_scores.csv")
     else:
-        path = Path(f"runs/{model}/llm_judge_scores.csv")
+        path = Path(f"01_single_turn/{model}/llm_judge_scores.csv")
 
     if not path.exists():
         return []
@@ -300,9 +300,9 @@ def main() -> None:
         report = analyze(rows, model, adversarial)
 
         if adversarial:
-            out_path = Path(f"runs/adversarial/{model}/llm_judge_agreement.md")
+            out_path = Path(f"02_adversarial_prompting/{model}/llm_judge_agreement.md")
         else:
-            out_path = Path(f"runs/{model}/llm_judge_agreement.md")
+            out_path = Path(f"01_single_turn/{model}/llm_judge_agreement.md")
 
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(report, encoding="utf-8")

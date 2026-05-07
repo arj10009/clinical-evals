@@ -3,7 +3,7 @@ from __future__ import annotations
 """Generate markdown failure packet for constrained HIGH-risk rule failures.
 
 This packet is data-driven:
-- Reads runs/adversarial/{model}/analysis/constrained_high_risk_rule_failures.csv
+- Reads 02_adversarial_prompting/{model}/analysis/constrained_high_risk_rule_failures.csv
   (written by src.analyze_adversarial_deltas)
 - For each failing case_id, includes:
   - adversarial prompt
@@ -85,11 +85,11 @@ def main() -> None:
     parser.add_argument("--model", required=True, help="Model tag, e.g. gpt5_2 or gpt4_1_mini")
     args = parser.parse_args()
 
-    scores_csv = Path(f"runs/adversarial/{args.model}/scored_results.csv")
-    outputs_jsonl = Path(f"runs/adversarial/{args.model}/model_outputs.jsonl")
-    failures_csv = Path(f"runs/adversarial/{args.model}/analysis/constrained_high_risk_rule_failures.csv")
+    scores_csv = Path(f"02_adversarial_prompting/{args.model}/scored_results.csv")
+    outputs_jsonl = Path(f"02_adversarial_prompting/{args.model}/model_outputs.jsonl")
+    failures_csv = Path(f"02_adversarial_prompting/{args.model}/analysis/constrained_high_risk_rule_failures.csv")
 
-    out_md = Path(f"runs/adversarial/{args.model}/analysis/failure_packet_high_risk_rule_failures.md")
+    out_md = Path(f"02_adversarial_prompting/{args.model}/analysis/failure_packet_high_risk_rule_failures.md")
 
     cases = load_cases()
     evidence = load_evidence()

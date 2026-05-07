@@ -31,11 +31,14 @@ CHATGPT_IMPLEMENTATION_PLAN.md
 HANDOVER_*.md
 PHASE_*.md
 
-# Local-only / not scoring
-runs/adversarial/llama3_1_8b/
+# Local-only / not scoring (paths after 2026-05 reorganisation)
+02_adversarial_prompting/llama3_1_8b/
 
-# Local-only / patched scratch outputs
-runs/adversarial/gpt5_2_patched/
+# Local-only / patched scratch outputs (paths after 2026-05 reorganisation)
+02_adversarial_prompting/gpt5_2_patched/
+
+# Pre-reorganisation backup snapshots (large; not for git)
+_backup_*/
 
 # Quarantine
 docs/_quarantine/

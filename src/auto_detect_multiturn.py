@@ -64,7 +64,7 @@ def load_multiturn_cases() -> dict[str, list[dict]]:
 
 def load_multiturn_outputs(model: str) -> list[dict]:
     """Load model outputs for multi-turn evaluation."""
-    path = Path(f"runs/multiturn/{model}/model_outputs.jsonl")
+    path = Path(f"04_multi_turn/{model}/model_outputs.jsonl")
     records = []
     with path.open("r", encoding="utf-8") as f:
         for line in f:
@@ -420,7 +420,7 @@ def main() -> None:
     print(f"Running multi-turn auto-detection for {args.model}...")
     flags = run_multiturn_detectors(args.model)
 
-    out_dir = Path(f"runs/multiturn/{args.model}")
+    out_dir = Path(f"04_multi_turn/{args.model}")
     csv_path = out_dir / "auto_flags.csv"
     md_path = out_dir / "auto_flags_summary.md"
 

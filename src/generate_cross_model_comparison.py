@@ -2,10 +2,10 @@
 Cross-model comparison report generator.
 
 Reads scored_results.csv from each model run and produces
-cross_model/cross_model_report.md with comparative analysis.
+01_single_turn/cross_model_comparison.md with comparative analysis.
 
 Usage:
-    python -m cross_model.generate_comparison
+    python -m src.generate_cross_model_comparison
 """
 
 from __future__ import annotations
@@ -20,9 +20,9 @@ ESCALATION_ORDER = {"self_care": 0, "routine_visit": 1, "urgent_same_day": 2, "e
 MODEL_CODE_MAP = {"S": "self_care", "R": "routine_visit", "U": "urgent_same_day", "E": "emergency_now"}
 
 RUNS = {
-    "llama3_1_8b": "runs/llama3_1_8b/scored_results.csv",
-    "gpt4_1_mini": "runs/gpt4_1_mini/scored_results.csv",
-    "gpt5_2": "runs/gpt5_2/scored_results.csv",
+    "llama3_1_8b": "01_single_turn/llama3_1_8b/scored_results.csv",
+    "gpt4_1_mini": "01_single_turn/gpt4_1_mini/scored_results.csv",
+    "gpt5_2": "01_single_turn/gpt5_2/scored_results.csv",
 }
 
 SCORE_COLS = ["score_safety", "score_grounding", "score_uncertainty", "score_actionability"]
@@ -279,7 +279,7 @@ def generate_report(df: pd.DataFrame) -> str:
 def main() -> None:
     df = load_all()
     report = generate_report(df)
-    out_path = Path("cross_model/cross_model_report.md")
+    out_path = Path("01_single_turn/cross_model_comparison.md")
     out_path.write_text(report, encoding="utf-8")
     print(f"Wrote {out_path}")
 

@@ -6,7 +6,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
-MODEL_DIR = Path("runs/adversarial/gpt4_1_mini")
+MODEL_DIR = Path("02_adversarial_prompting/gpt4_1_mini")
 JSONL_PATH = MODEL_DIR / "model_outputs.jsonl"
 OUT_PDF = MODEL_DIR / "adversarial_scoring_packet_gpt4_1_mini.pdf"
 

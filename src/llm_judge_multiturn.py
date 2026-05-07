@@ -195,7 +195,7 @@ def load_multiturn_cases() -> dict[str, list[dict]]:
 
 
 def load_multiturn_outputs(model: str) -> list[dict]:
-    path = Path(f"runs/multiturn/{model}/model_outputs.jsonl")
+    path = Path(f"04_multi_turn/{model}/model_outputs.jsonl")
     records = []
     with path.open("r", encoding="utf-8") as f:
         for line in f:
@@ -206,7 +206,7 @@ def load_multiturn_outputs(model: str) -> list[dict]:
 
 def load_multiturn_human_scores(model: str) -> dict[tuple[str, int, str], dict]:
     """Load human-scored multi-turn results keyed by (case_id, turn_num, condition)."""
-    path = Path(f"runs/multiturn/{model}/scored_results.csv")
+    path = Path(f"04_multi_turn/{model}/scored_results.csv")
     scores = {}
     with path.open("r", encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -236,7 +236,7 @@ def main() -> None:
     outputs = load_multiturn_outputs(args.model)
     human_scores = load_multiturn_human_scores(args.model)
 
-    out_dir = Path(f"runs/multiturn/{args.model}")
+    out_dir = Path(f"04_multi_turn/{args.model}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # Group outputs by (case_id, condition)

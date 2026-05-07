@@ -27,7 +27,7 @@ def main() -> None:
     cases_path = Path("data/adversarial_cases.csv")
     evidence_path = Path("data/evidence_packs.json")
 
-    output_path = Path(f"runs/adversarial/{config.run_tag}/model_outputs.jsonl")
+    output_path = Path(f"02_adversarial_prompting/{config.run_tag}/model_outputs.jsonl")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     dry_run = os.getenv("DRY_RUN", "1") == "1"

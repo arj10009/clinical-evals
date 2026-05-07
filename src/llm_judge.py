@@ -180,9 +180,9 @@ def load_outputs(model: str, adversarial: bool) -> dict[tuple[str, str], dict]:
     zero-padded IDs (e.g., "001" vs "1").
     """
     if adversarial:
-        path = Path(f"runs/adversarial/{model}/model_outputs.jsonl")
+        path = Path(f"02_adversarial_prompting/{model}/model_outputs.jsonl")
     else:
-        path = Path(f"runs/{model}/model_outputs.jsonl")
+        path = Path(f"01_single_turn/{model}/model_outputs.jsonl")
 
     outputs = {}
     with path.open("r", encoding="utf-8") as f:
@@ -202,9 +202,9 @@ def load_outputs(model: str, adversarial: bool) -> dict[tuple[str, str], dict]:
 def load_human_scores(model: str, adversarial: bool) -> dict[tuple[str, str], dict]:
     """Load human-scored results keyed by (case_id, condition)."""
     if adversarial:
-        path = Path(f"runs/adversarial/{model}/scored_results.csv")
+        path = Path(f"02_adversarial_prompting/{model}/scored_results.csv")
     else:
-        path = Path(f"runs/{model}/scored_results.csv")
+        path = Path(f"01_single_turn/{model}/scored_results.csv")
 
     scores = {}
     with path.open("r", encoding="utf-8") as f:
@@ -237,9 +237,9 @@ def main() -> None:
     human_scores = load_human_scores(args.model, args.adversarial)
 
     if args.adversarial:
-        out_dir = Path(f"runs/adversarial/{args.model}")
+        out_dir = Path(f"02_adversarial_prompting/{args.model}")
     else:
-        out_dir = Path(f"runs/{args.model}")
+        out_dir = Path(f"01_single_turn/{args.model}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     results = []

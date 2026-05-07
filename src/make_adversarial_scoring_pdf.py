@@ -13,9 +13,9 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 # HARD SAFETY: GPT-5.2 ONLY
 EXPECTED_RUN_TAG = "gpt5_2"
 EXPECTED_MODEL_NAME = "gpt-5.2"
-JSONL_PATH = Path("runs/adversarial/gpt5_2/model_outputs.jsonl")
+JSONL_PATH = Path("02_adversarial_prompting/gpt5_2/model_outputs.jsonl")
 CASES_PATH = Path("data/adversarial_cases.csv")
-OUT_PDF = Path("runs/adversarial/gpt5_2/adversarial_scoring_packet_gpt5_2.pdf")
+OUT_PDF = Path("02_adversarial_prompting/gpt5_2/adversarial_scoring_packet_gpt5_2.pdf")
 
 PAGE_W, PAGE_H = A4
 MARGIN_L = 16 * mm

@@ -118,7 +118,7 @@ def _write_scored_summary(df: pd.DataFrame, out_path: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("run_dir", help="Run folder, e.g. runs/gpt5_2_run")
+    ap.add_argument("run_dir", help="Run folder, e.g. 01_single_turn/gpt5_2")
     args = ap.parse_args()
 
     run_dir = Path(args.run_dir)

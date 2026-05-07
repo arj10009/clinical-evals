@@ -12,7 +12,7 @@ Usage:
     CASE_ID=MT01 python -m src.run_multiturn_eval     # single case
 
 Output:
-    runs/multiturn/{run_tag}/model_outputs.jsonl
+    04_multi_turn/{run_tag}/model_outputs.jsonl
 """
 
 import csv
@@ -87,7 +87,7 @@ def main() -> None:
     cases_path = Path("data/multiturn_cases.csv")
     evidence_path = Path("data/evidence_packs_multiturn.json")
 
-    output_path = Path(f"runs/multiturn/{config.run_tag}/model_outputs.jsonl")
+    output_path = Path(f"04_multi_turn/{config.run_tag}/model_outputs.jsonl")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     dry_run = os.getenv("DRY_RUN", "1") == "1"

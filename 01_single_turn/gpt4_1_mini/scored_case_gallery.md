@@ -1,8 +1,8 @@
 # Scored Case Gallery — GPT-4.1-mini
 
-Source scores: `runs/singleturn/gpt4_1_mini/scored_results.csv`
+Source scores: `01_single_turn/gpt4_1_mini/scored_results.csv`
 
-Source outputs: `runs/singleturn/gpt4_1_mini/model_outputs.jsonl`
+Source outputs: `01_single_turn/gpt4_1_mini/model_outputs.jsonl`
 
 Total cases: 30
 

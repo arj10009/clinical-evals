@@ -242,7 +242,7 @@ After completing multi-turn scoring (human + LLM judge), five targeted patches w
 | GPT-5.2 | 7 | 3 | 4 (2 unsafe phrase FP, 1 under-triage FP, 1 final mismatch FP) |
 | GPT-4.1-mini | 2 | 0 | 2 (1 under-triage FP, 1 final mismatch FP) |
 
-Pre-patch baselines are archived in `runs/patch_work/pre_patch/`. Post-patch model outputs (re-run with patched prompts) are stored in `runs/patch_work/post_patch/`.
+Pre-patch baselines are archived in `05_iterative_patching/pre_patch/`. Post-patch model outputs (re-run with patched prompts) are stored in `05_iterative_patching/post_patch/`.
 
 ---
 
